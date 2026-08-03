@@ -1,130 +1,181 @@
 import { motion } from 'framer-motion';
-import { FiTarget, FiZap, FiTrendingUp } from 'react-icons/fi';
-import { HiSparkles } from 'react-icons/hi';
+import { FiTrendingUp } from 'react-icons/fi';
+import { TbChessKnight, TbLayersSubtract } from 'react-icons/tb';
 
-const highlights = [
+const points = [
   {
-    icon: <FiTarget />,
-    title: 'Strategic Vision',
-    desc: 'We start with clarity — mapping goals, users, and outcomes before touching a single pixel.',
+    icon: <TbChessKnight />,
+    title: 'Strategy before everything',
+    desc: 'We plan before we design. Your brand gets direction, not just decoration.',
   },
   {
-    icon: <FiZap />,
-    title: 'Creative Execution',
-    desc: 'Design, code, and content built together — one team, one language, zero handoff friction.',
+    icon: <TbLayersSubtract />,
+    title: 'One team, end to end',
+    desc: 'Brand, tech, AI, marketing — no vendor juggling, no handoff friction.',
   },
   {
     icon: <FiTrendingUp />,
-    title: 'Measurable Growth',
-    desc: 'Every campaign, feature, and asset is tied to a metric that moves the business forward.',
+    title: 'Built for revenue, not applause',
+    desc: 'Every deliverable is tied to a metric that moves your business forward.',
   },
 ];
 
 const About = () => {
   return (
     <section id="about" className="section bg-white">
-      <div className="max-w-[1100px] mx-auto px-6 md:px-12">
+      <div className="max-w-[1200px] mx-auto px-6 md:px-12">
 
         {/* Eyebrow */}
         <motion.div
-          className="flex items-center gap-3 mb-14"
+          className="flex items-center gap-3 mb-12"
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <span className="w-5 h-px bg-[#0078BF] inline-block" />
-          <span className="text-[11px] font-semibold tracking-[0.12em] uppercase text-[#0078BF]">
+          <span className="w-[18px] h-[1.5px] bg-[#0078BF] inline-block" />
+          <span className="text-[11px] font-bold tracking-[0.16em] uppercase text-[#0078BF]">
             About Quebeta
           </span>
         </motion.div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 lg:gap-20 items-start">
+        {/* Main Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 xl:gap-16 items-center">
 
-          {/* LEFT */}
+          {/* LEFT — Image */}
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            className="relative"
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.7 }}
           >
-            {/* Badge */}
-            <div className="section-eyebrow mb-6">
-              <HiSparkles className="text-[13px]" />
-              From idea to impact
-            </div>
+            <div className="relative rounded-[20px] overflow-hidden aspect-[3/4]">
 
-            {/* Heading */}
-            <h2 className="section-title text-left">
-              A strategic{' '}
-              <span className="gradient-text">technology &amp; growth</span>{' '}
-              partner
+              {/* Replace src with your actual team photo */}
+              <img
+                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=700&q=80"
+                alt="Quebeta team at work"
+                className="w-full h-full object-cover"
+              />
+
+              {/* Dark gradient overlay */}
+              <div
+                className="absolute inset-0"
+                style={{ background: 'linear-gradient(to top, rgba(10,25,41,0.88) 0%, rgba(10,25,41,0.08) 55%, transparent 100%)' }}
+              />
+
+              {/* CEO Quote — bottom */}
+              <div className="absolute bottom-0 left-0 right-0 p-7">
+                <p className="text-[14px] leading-[1.65] text-white/90 italic mb-4">
+                  "I watched too many smart founders fail — not from bad ideas, but bad execution. We fix that."
+                </p>
+                <div className="flex items-center gap-3">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#1CBBEE] animate-pulse" />
+                  <div>
+                    <div className="text-[12px] font-bold text-white tracking-[0.06em]">
+                      Rutika Channawar
+                    </div>
+                    <div className="text-[11px] text-white/50 mt-0.5">
+                      Founder & CEO
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Top pill badge */}
+              <div className="absolute top-5 left-5 bg-white/95 rounded-full px-4 py-1.5 flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#0078BF] animate-pulse" />
+                <span className="text-[11px] font-bold text-[#0078BF] tracking-[0.06em] uppercase">
+                  Est. 2020 · Pune
+                </span>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* RIGHT — Content */}
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+          >
+            {/* Headline */}
+            <h2
+              className="text-[clamp(32px,4vw,42px)] font-extrabold leading-[1.08] tracking-[-0.03em] text-[#0A1929] mb-4"
+              style={{ fontFamily: 'var(--font-heading)' }}
+            >
+              We build businesses<br />
+              <span className="text-[#0078BF]">that outlast</span><br />
+              <span className="font-normal text-slate-400">the hype.</span>
             </h2>
 
             {/* Body */}
-            <p className="section-subtitle mb-12">
-              Quebeta transforms ambitious ideas into scalable brands, digital
-              products, and intelligent systems — combining strategy, creativity,
-              technology, AI, and marketing into one focused engine.
+            <p className="text-[14.5px] leading-[1.8] text-slate-500 mb-10">
+              Most agencies hand you a website and disappear. Quebeta stays —
+              embedding <strong className="text-[#0A1929] font-semibold">strategy into every pixel, every system,
+              every campaign</strong> until your business is built to grow on its own.
             </p>
 
+            {/* Points */}
+            <div className="flex flex-col">
+              {points.map((p, i) => (
+                <motion.div
+                  key={p.title}
+                  className={`flex items-start gap-4 py-[18px] border-b border-slate-100 ${i === 0 ? 'border-t border-slate-100' : ''}`}
+                  initial={{ opacity: 0, y: 14 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.45, delay: 0.08 * i }}
+                >
+                  <div
+                    className="w-[34px] h-[34px] min-w-[34px] rounded-[9px] flex items-center justify-center text-[16px] text-[#0078BF]"
+                    style={{ background: 'rgba(0,120,191,0.08)' }}
+                  >
+                    {p.icon}
+                  </div>
+                  <div>
+                    <div
+                      className="text-[13.5px] font-bold text-[#0A1929] mb-1"
+                      style={{ fontFamily: 'var(--font-heading)' }}
+                    >
+                      {p.title}
+                    </div>
+                    <div className="text-[12.5px] leading-[1.6] text-slate-400">
+                      {p.desc}
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
             {/* Stats */}
-            <div className="flex gap-10 pt-8 border-t border-slate-100">
-              {[['98%', 'Client Retention'], ['6+', 'Core Services']].map(([num, label]) => (
+            <div className="flex gap-8 mt-8 pt-7 border-t border-slate-100">
+              {[
+                ['98%', 'Client retention'],
+                ['6+', 'Core services'],
+                ['1 team', 'No vendor juggling'],
+              ].map(([num, label]) => (
                 <div key={label}>
                   <div
-                    className="text-[34px] font-bold leading-none mb-1.5 text-[#0A1929] tracking-tight"
+                    className="text-[26px] font-extrabold text-[#0A1929] tracking-tight leading-none mb-1"
                     style={{ fontFamily: 'var(--font-heading)' }}
                   >
-                    {num}
+                    {num.includes('%') || num.includes('+') ? (
+                      <>
+                        {num.replace('%', '').replace('+', '')}
+                        <span className="text-[#0078BF]">{num.includes('%') ? '%' : '+'}</span>
+                      </>
+                    ) : (
+                      <>{num}</>
+                    )}
                   </div>
-                  <div className="text-[11px] font-semibold tracking-[0.08em] uppercase text-slate-400">
+                  <div className="text-[10.5px] font-semibold uppercase tracking-[0.08em] text-slate-400">
                     {label}
                   </div>
                 </div>
               ))}
             </div>
-          </motion.div>
-
-          {/* RIGHT */}
-          <motion.div
-            className="flex flex-col"
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.12 }}
-          >
-            {highlights.map((h, i) => (
-              <motion.div
-                key={h.title}
-                className={`flex items-start gap-5 py-7 border-b border-slate-100 ${i === 0 ? 'border-t border-slate-100' : ''}`}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.08 * i }}
-              >
-                {/* Icon */}
-                <div
-                  className="w-10 h-10 min-w-[40px] rounded-[10px] flex items-center justify-center text-[17px] text-[#0078BF] mt-0.5"
-                  style={{ background: 'rgba(0,120,191,0.08)' }}
-                >
-                  {h.icon}
-                </div>
-
-                <div>
-                  <h4
-                    className="text-[15px] font-semibold text-[#0A1929] mb-1.5 tracking-tight"
-                    style={{ fontFamily: 'var(--font-heading)' }}
-                  >
-                    {h.title}
-                  </h4>
-                  <p className="text-[13.5px] leading-relaxed text-slate-500">
-                    {h.desc}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
           </motion.div>
 
         </div>
