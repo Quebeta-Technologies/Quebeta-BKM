@@ -3,7 +3,7 @@ import AOS from 'aos';
 
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import ScrollProgress from './components/ScrollProgress';
+// ❌ removed: import ScrollProgress from './components/ScrollProgress';
 import ScrollToTop from './components/ScrollToTop';
 
 import Hero from './sections/Hero';
@@ -29,7 +29,7 @@ function App() {
 
   return (
     <>
-      <ScrollProgress />
+      {/* ❌ removed: <ScrollProgress /> */}
       <Navbar />
       <main>
         <Hero />
