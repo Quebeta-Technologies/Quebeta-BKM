@@ -78,7 +78,8 @@ h1,h2,h3,h4,h5,h6 {
   }
 
   .section { @apply py-[100px] relative overflow-hidden; }
-  .section-header { @apply text-center max-w-[720px] mx-auto mb-16; }
+  .section-container { @apply max-w-[1400px] mx-auto px-6 md:px-16; }
+  .section-header { @apply text-center max-w-[860px] mx-auto mb-16; }
 
   .section-eyebrow {
     @apply inline-flex items-center gap-2 px-[18px] py-2 rounded-full text-[13px] font-semibold tracking-[0.08em] uppercase mb-5 border;

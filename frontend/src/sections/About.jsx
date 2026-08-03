@@ -23,7 +23,7 @@ const points = [
 const About = () => {
   return (
     <section id="about" className="section bg-white">
-      <div className="max-w-[1200px] mx-auto px-6 md:px-12">
+      <div className="section-container">
 
         {/* Eyebrow */}
         <motion.div
