@@ -1,10 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700;800&family=Google+Sans+Display:wght@400;500;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* ============================================================
    QUEBETA DESIGN SYSTEM — CSS VARIABLES
-   Only things Tailwind can't handle at runtime go here.
    ============================================================ */
 :root {
   --brand-primary: #0078BF;
@@ -21,8 +22,8 @@
     radial-gradient(at 20% 20%, rgba(0,120,191,0.15) 0px, transparent 50%),
     radial-gradient(at 80% 30%, rgba(28,187,238,0.15) 0px, transparent 50%),
     radial-gradient(at 40% 80%, rgba(0,212,255,0.1) 0px, transparent 50%);
-  --font-heading: 'Sora', 'Space Grotesk', sans-serif;
-  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-heading: 'Google Sans Display', 'Google Sans', sans-serif;
+  --font-body: 'Google Sans', sans-serif;
   --shadow-sm: 0 2px 8px rgba(0,120,191,0.08);
   --shadow-md: 0 8px 24px rgba(0,120,191,0.12);
   --shadow-lg: 0 16px 48px rgba(0,120,191,0.16);
@@ -42,7 +43,7 @@
 html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 
 body {
-  font-family: var(--font-body);
+  font-family: 'Google Sans', sans-serif;
   font-size: 16px;
   line-height: 1.6;
   color: #1E293B;
@@ -56,7 +57,7 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
 ul, ol { list-style: none; }
 
 h1,h2,h3,h4,h5,h6 {
-  font-family: var(--font-heading);
+  font-family: 'Google Sans Display', 'Google Sans', sans-serif;
   font-weight: 700;
   line-height: 1.15;
   color: var(--brand-dark);
@@ -64,10 +65,9 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 /* ============================================================
-   REUSABLE UTILITY CLASSES (used across multiple components)
+   REUSABLE UTILITY CLASSES
    ============================================================ */
 @layer components {
-  /* Gradient text — used in almost every section heading */
   .gradient-text {
     background: var(--gradient-primary);
     -webkit-background-clip: text;
@@ -77,13 +77,12 @@ h1,h2,h3,h4,h5,h6 {
     display: inline-block;
   }
 
-  /* Section layout */
   .section { @apply py-[100px] relative overflow-hidden; }
   .section-header { @apply text-center max-w-[720px] mx-auto mb-16; }
 
-  /* Eyebrow pill badge */
   .section-eyebrow {
     @apply inline-flex items-center gap-2 px-[18px] py-2 rounded-full text-[13px] font-semibold tracking-[0.08em] uppercase mb-5 border;
+    font-family: 'Google Sans', sans-serif;
     background: rgba(0,120,191,0.08);
     color: var(--brand-primary);
     border-color: rgba(0,120,191,0.15);
@@ -91,17 +90,20 @@ h1,h2,h3,h4,h5,h6 {
 
   .section-title {
     font-size: clamp(2rem, 4.5vw, 3.25rem);
+    font-family: 'Google Sans Display', 'Google Sans', sans-serif;
     @apply mb-5;
   }
 
-  .section-subtitle { @apply text-lg text-slate-500 leading-[1.7]; }
+  .section-subtitle {
+    @apply text-lg text-slate-500 leading-[1.7];
+    font-family: 'Google Sans', sans-serif;
+  }
 
-  /* Buttons */
   .btn {
     @apply inline-flex items-center justify-center gap-[10px] px-[30px] py-[14px]
            font-semibold text-[15px] rounded-full relative overflow-hidden cursor-pointer
            transition-all duration-300 whitespace-nowrap;
-    font-family: var(--font-heading);
+    font-family: 'Google Sans', sans-serif;
   }
   .btn-primary {
     background: var(--gradient-primary);
@@ -120,7 +122,6 @@ h1,h2,h3,h4,h5,h6 {
   }
   .btn-ghost:hover { background: rgba(255,255,255,0.2); @apply -translate-y-[3px]; }
 
-  /* Glass cards */
   .glass {
     background: rgba(255,255,255,0.7);
     backdrop-filter: blur(20px);
@@ -151,7 +152,7 @@ h1,h2,h3,h4,h5,h6 {
 ::selection { background: #1CBBEE; color: #fff; }
 
 /* ============================================================
-   MARQUEE ANIMATIONS  (used in TechStack & Clients)
+   MARQUEE ANIMATIONS
    ============================================================ */
 @keyframes marquee-left {
   from { transform: translateX(0); }
@@ -171,11 +172,10 @@ h1,h2,h3,h4,h5,h6 {
 .animate-scroll-fwd   { animation: scroll-marquee 40s linear infinite; }
 .animate-scroll-rev   { animation: scroll-marquee 35s linear infinite reverse; }
 
-/* Pause on hover */
 .marquee-track:hover { animation-play-state: paused; }
 
 /* ============================================================
-   FLOATING ANIMATION  (CEO portrait)
+   FLOATING ANIMATION
    ============================================================ */
 @keyframes float {
   0%, 100% { transform: translateY(0); }
@@ -184,7 +184,7 @@ h1,h2,h3,h4,h5,h6 {
 .animate-float { animation: float 6s ease-in-out infinite; }
 
 /* ============================================================
-   PULSE GLOW  (CEO portrait halo)
+   PULSE GLOW
    ============================================================ */
 @keyframes pulse-glow {
   0%, 100% { box-shadow: 0 0 20px rgba(28,187,238,0.4); }
@@ -193,7 +193,7 @@ h1,h2,h3,h4,h5,h6 {
 .animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
 
 /* ============================================================
-   ROTATE SLOW  (CEO portrait rings)
+   ROTATE SLOW
    ============================================================ */
 @keyframes rotate-slow {
   from { transform: rotate(0deg); }
