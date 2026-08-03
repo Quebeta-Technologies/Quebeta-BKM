@@ -42,7 +42,7 @@ const Navbar = () => {
       <div className="max-w-[1280px] mx-auto px-6 flex items-center justify-between gap-10">
 
         {/* Logo */}
-        
+        <a
           href="#home"
           className="block"
           onClick={() => setActiveLink('Home')}
@@ -53,7 +53,7 @@ const Navbar = () => {
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-1">
           {navLinks.map((link) => (
-            
+            <a
               key={link.name}
               href={link.href}
               onClick={() => setActiveLink(link.name)}
@@ -75,7 +75,7 @@ const Navbar = () => {
         </nav>
 
         {/* CTA Button */}
-        
+        <a
           href="#contact"
           className="hidden md:inline-flex items-center gap-2 px-[22px] py-[10px] text-white font-semibold text-sm rounded-full transition-opacity duration-200 hover:opacity-85"
           style={{
@@ -126,7 +126,7 @@ const Navbar = () => {
                 {link.name}
               </motion.a>
             ))}
-            
+            <a
               href="#contact"
               onClick={() => setMenuOpen(false)}
               className="mt-3 inline-flex items-center justify-center gap-2 px-6 py-3 text-white font-semibold text-sm rounded-full"
