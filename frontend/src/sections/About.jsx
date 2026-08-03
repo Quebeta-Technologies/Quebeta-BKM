@@ -105,9 +105,8 @@ const About = () => {
               className="text-[clamp(32px,4vw,42px)] font-extrabold leading-[1.08] tracking-[-0.03em] text-[#0A1929] mb-4"
               style={{ fontFamily: 'var(--font-heading)' }}
             >
-              We build businesses<br />
-              <span className="text-[#0078BF]">that outlast</span><br />
-              <span className="font-normal text-slate-400">the hype.</span>
+              We build businesses
+              <span className="text-[#0078BF]">that outlast the hype</span>
             </h2>
 
             {/* Body */}
