@@ -74,7 +74,7 @@ const Navbar = () => {
           className="hidden md:inline-flex items-center gap-2 px-[22px] py-3 text-white font-semibold text-sm rounded-full
                      transition-all duration-300 hover:-translate-y-[3px] group"
           style={{
-            background: 'linear-gradient(135deg, #0078BF 0%, #1CBBEE 100%)',
+            background: '#0078BF',
             boxShadow: '0 8px 24px rgba(0,120,191,0.25)',
             fontFamily: 'var(--font-heading)',
           }}
