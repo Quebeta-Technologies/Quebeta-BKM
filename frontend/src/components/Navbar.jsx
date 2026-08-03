@@ -75,7 +75,6 @@ const Navbar = () => {
                      transition-all duration-300 hover:-translate-y-[3px] group"
           style={{
             background: '#0078BF',
-            boxShadow: '0 8px 24px rgba(0,120,191,0.25)',
             fontFamily: 'var(--font-heading)',
           }}
         >
