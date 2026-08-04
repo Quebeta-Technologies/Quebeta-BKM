@@ -28,50 +28,8 @@ const About = () => {
     <section id="about" className="section bg-white">
       <div className="section-container">
 
-        {/* TOP: Eyebrow + Heading + Subtext */}
-        <div className="mb-16">
-          <motion.div
-            className="flex items-center gap-3 mb-5"
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4 }}
-          >
-            <span className="w-5 h-[1.5px] bg-[#0078BF] inline-block" />
-            <span className="text-[11px] font-bold tracking-[0.16em] uppercase text-[#0078BF]">
-              About Quebeta
-            </span>
-          </motion.div>
-
-          <motion.h2
-            className="text-[clamp(34px,4.5vw,56px)] font-extrabold leading-[1.06] tracking-[-0.03em] text-[#0A1929] mb-5"
-            style={{ fontFamily: 'var(--font-heading)', maxWidth: '820px' }}
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.06 }}
-          >
-            We build businesses{' '}
-            <span className="text-[#0078BF]">that outlast the hype</span>
-          </motion.h2>
-
-          <motion.p
-            className="text-[15px] leading-[1.85] text-slate-500 max-w-[560px]"
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.45, delay: 0.12 }}
-          >
-            Most agencies hand you a deliverable and disappear. Quebeta embeds —{' '}
-            <strong className="text-[#0A1929] font-semibold">
-              strategy wired into every pixel, every system, every campaign
-            </strong>{' '}
-            until growth becomes the default.
-          </motion.p>
-        </div>
-
-        {/* MAIN GRID */}
-        <div className="grid grid-cols-1 lg:grid-cols-[480px_1fr] gap-14 xl:gap-20 items-start">
+        {/* MAIN GRID — Image left, ALL content right */}
+        <div className="grid grid-cols-1 lg:grid-cols-[420px_1fr] gap-14 xl:gap-20 items-start">
 
           {/* LEFT — Image */}
           <motion.div
@@ -90,7 +48,6 @@ const About = () => {
                 alt="Quebeta team at work"
                 className="w-full h-full object-cover"
               />
-
               <div
                 className="absolute inset-0"
                 style={{
@@ -124,7 +81,7 @@ const About = () => {
               </div>
             </div>
 
-            {/* Stats card floating below-right */}
+            {/* Stats card */}
             <motion.div
               className="absolute -bottom-6 -right-6 bg-white rounded-2xl px-6 py-4 flex gap-6"
               style={{ boxShadow: '0 12px 40px rgba(0,0,0,0.10)' }}
@@ -144,9 +101,7 @@ const About = () => {
                         <>{num.replace('%', '')}<span className="text-[#0078BF]">%</span></>
                       ) : num.includes('+') ? (
                         <>{num.replace('+', '')}<span className="text-[#0078BF]">+</span></>
-                      ) : (
-                        num
-                      )}
+                      ) : num}
                     </div>
                     <div className="text-[9.5px] font-semibold uppercase tracking-[0.1em] text-slate-400">
                       {label}
@@ -157,15 +112,47 @@ const About = () => {
             </motion.div>
           </motion.div>
 
-          {/* RIGHT — Content */}
+          {/* RIGHT — ALL content */}
           <motion.div
-            className="pt-2 pb-10"
+            className="pt-1"
             initial={{ opacity: 0, x: 24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
           >
-            <p className="text-[14.5px] leading-[1.85] text-slate-500 mb-10">
+            {/* Eyebrow */}
+            <motion.div
+              className="flex items-center gap-3 mb-4"
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4 }}
+            >
+              <span className="w-5 h-[1.5px] bg-[#0078BF] inline-block" />
+              <span className="text-[11px] font-bold tracking-[0.16em] uppercase text-[#0078BF]">
+                About Quebeta
+              </span>
+            </motion.div>
+
+            {/* Heading — 30px */}
+            <h2
+              className="font-extrabold leading-[1.12] tracking-[-0.02em] text-[#0A1929] mb-4"
+              style={{ fontFamily: 'var(--font-heading)', fontSize: '30px' }}
+            >
+              We build businesses{' '}
+              <span className="text-[#0078BF]">that outlast the hype</span>
+            </h2>
+
+            {/* Subtext — black */}
+            <p className="text-[14.5px] leading-[1.85] text-[#0A1929] mb-8">
+              Most agencies hand you a deliverable and disappear. Quebeta embeds —{' '}
+              <strong className="font-semibold">
+                strategy wired into every pixel, every system, every campaign
+              </strong>{' '}
+              until growth becomes the default.
+            </p>
+
+            <p className="text-[14px] leading-[1.85] text-[#0A1929] mb-10">
               Quebeta was built from frustration. Too many growing companies were stuck cycling
               through agencies that over-promised, under-delivered, and handed off with zero context.
               We're the opposite — a single committed team that thinks like a co-founder and stays
@@ -177,7 +164,7 @@ const About = () => {
               {points.map((p, i) => (
                 <motion.div
                   key={p.title}
-                  className="flex items-start gap-4 py-5 border-b border-slate-100 cursor-default group"
+                  className="flex items-start gap-4 py-5 border-b border-slate-100 cursor-default"
                   style={{ borderTop: i === 0 ? '1px solid rgb(241 245 249)' : undefined }}
                   onMouseEnter={() => setActivePoint(i)}
                   onMouseLeave={() => setActivePoint(null)}
@@ -189,8 +176,7 @@ const About = () => {
                   <motion.div
                     className="w-10 h-10 min-w-[40px] rounded-[11px] flex items-center justify-center"
                     animate={{
-                      background:
-                        activePoint === i ? 'rgba(0,120,191,0.13)' : 'rgba(0,120,191,0.07)',
+                      background: activePoint === i ? 'rgba(0,120,191,0.13)' : 'rgba(0,120,191,0.07)',
                       color: activePoint === i ? '#0078BF' : '#93c4dc',
                     }}
                     transition={{ duration: 0.2 }}
@@ -207,7 +193,7 @@ const About = () => {
                     >
                       {p.title}
                     </motion.div>
-                    <div className="text-[13px] leading-[1.65] text-slate-400">{p.desc}</div>
+                    <div className="text-[13px] leading-[1.65] text-[#0A1929]">{p.desc}</div>
                   </div>
 
                   <motion.div
@@ -235,7 +221,7 @@ const About = () => {
 
               <a
                 href="#services"
-                className="text-[13px] font-semibold text-slate-500 hover:text-[#0078BF] transition-colors duration-200 flex items-center gap-1.5 group"
+                className="text-[13px] font-semibold text-[#0A1929] hover:text-[#0078BF] transition-colors duration-200 flex items-center gap-1.5 group"
               >
                 See our services
                 <FiArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform duration-200" />
