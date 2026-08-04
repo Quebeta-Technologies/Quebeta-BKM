@@ -23,11 +23,12 @@ const points = [
 
 const About = () => {
   const [activePoint, setActivePoint] = useState(null);
+  const [imgHovered, setImgHovered] = useState(false);
 
   return (
     <section id="about" className="section bg-white">
       <div className="section-container">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-16 xl:gap-24 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-[400px_1fr] gap-16 xl:gap-24 items-center">
 
           {/* LEFT — Image with floating cards */}
           <motion.div
@@ -37,64 +38,79 @@ const About = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
-            {/* Main image */}
+            {/* Main image — smaller, square-ish */}
             <div
-              className="relative rounded-[20px] overflow-hidden w-full"
-              style={{ aspectRatio: '4/4.2', boxShadow: '0 20px 60px rgba(0,0,0,0.13)' }}
+              className="relative rounded-[20px] overflow-hidden w-full cursor-pointer"
+              style={{ aspectRatio: '3/3.6', boxShadow: '0 20px 60px rgba(0,0,0,0.13)' }}
+              onMouseEnter={() => setImgHovered(true)}
+              onMouseLeave={() => setImgHovered(false)}
             >
               <img
                 src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=900&q=85"
                 alt="Quebeta team"
                 className="w-full h-full object-cover"
               />
-              {/* subtle bottom fade */}
+
+              {/* Always-on bottom fade */}
               <div
                 className="absolute inset-0"
-                style={{ background: 'linear-gradient(to top, rgba(10,25,41,0.55) 0%, transparent 55%)' }}
+                style={{ background: 'linear-gradient(to top, rgba(10,25,41,0.82) 0%, rgba(10,25,41,0.1) 50%, transparent 100%)' }}
               />
 
-              {/* EST pill — top left inside image */}
+              {/* Founded pill — top left, doesn't block quote */}
               <div className="absolute top-5 left-5">
-                <div className="bg-white rounded-xl px-4 py-2.5 flex items-center gap-2.5" style={{ boxShadow: '0 4px 16px rgba(0,0,0,0.10)' }}>
+                <div className="bg-white rounded-xl px-3.5 py-2 flex items-center gap-2" style={{ boxShadow: '0 4px 16px rgba(0,0,0,0.10)' }}>
                   <span className="w-1.5 h-1.5 rounded-full bg-[#0078BF]" />
                   <div>
-                    <div className="text-[9px] font-bold uppercase tracking-[0.12em] text-slate-400">Founded</div>
-                    <div className="text-[13px] font-bold text-[#0A1929]">2020 · Pune</div>
+                    <div className="text-[8.5px] font-bold uppercase tracking-[0.12em] text-slate-400">Founded</div>
+                    <div className="text-[12px] font-bold text-[#0A1929]">2020 · Pune</div>
                   </div>
                 </div>
               </div>
 
-              {/* CEO quote — bottom inside image */}
-              <div className="absolute bottom-0 left-0 right-0 p-6">
-                <p className="text-[13px] leading-[1.65] text-white/90 italic mb-3">
+              {/* CEO quote — always visible, slides up more on hover */}
+              <motion.div
+                className="absolute bottom-0 left-0 right-0 p-6"
+                animate={{ y: imgHovered ? -4 : 0 }}
+                transition={{ duration: 0.3, ease: 'easeOut' }}
+              >
+                <motion.p
+                  className="text-[13px] leading-[1.65] italic mb-3"
+                  animate={{ color: imgHovered ? 'rgba(255,255,255,1)' : 'rgba(255,255,255,0.75)' }}
+                  transition={{ duration: 0.25 }}
+                >
                   "Too many smart founders fail — not from bad ideas, but bad execution."
-                </p>
-                <div className="flex items-center gap-2.5">
+                </motion.p>
+                <motion.div
+                  className="flex items-center gap-2.5"
+                  animate={{ opacity: imgHovered ? 1 : 0.6 }}
+                  transition={{ duration: 0.25 }}
+                >
                   <span className="w-1.5 h-1.5 rounded-full bg-[#1CBBEE] animate-pulse" />
                   <span className="text-[11.5px] font-bold text-white">Rutika Channawar</span>
-                  <span className="text-[11px] text-white/50">· Founder & CEO</span>
-                </div>
-              </div>
+                  <span className="text-[11px] text-white/60">· Founder & CEO</span>
+                </motion.div>
+              </motion.div>
             </div>
 
-            {/* Floating card — right side, mid */}
+            {/* Floating card — right side mid */}
             <motion.div
-              className="absolute -right-8 top-1/2 -translate-y-1/2 bg-white rounded-xl px-5 py-4"
+              className="absolute -right-8 top-[42%] -translate-y-1/2 bg-white rounded-xl px-5 py-3.5"
               style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.12)' }}
               initial={{ opacity: 0, x: 16 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.45 }}
             >
-              <div className="text-[9px] font-bold uppercase tracking-[0.12em] text-slate-400 mb-1">Client retention</div>
-              <div className="text-[26px] font-extrabold text-[#0A1929] leading-none" style={{ fontFamily: 'var(--font-heading)' }}>
+              <div className="text-[8.5px] font-bold uppercase tracking-[0.12em] text-slate-400 mb-0.5">Client retention</div>
+              <div className="text-[24px] font-extrabold text-[#0A1929] leading-none" style={{ fontFamily: 'var(--font-heading)' }}>
                 98<span className="text-[#0078BF]">%</span>
               </div>
             </motion.div>
 
             {/* Floating card — bottom left */}
             <motion.div
-              className="absolute -bottom-6 left-6 bg-white rounded-xl px-5 py-3.5 flex items-center gap-3"
+              className="absolute -bottom-5 left-5 bg-white rounded-xl px-4 py-3 flex items-center gap-3"
               style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.11)' }}
               initial={{ opacity: 0, y: 14 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -102,14 +118,14 @@ const About = () => {
               transition={{ duration: 0.5, delay: 0.5 }}
             >
               <div
-                className="w-8 h-8 rounded-[8px] flex items-center justify-center text-[#0078BF]"
+                className="w-7 h-7 rounded-[7px] flex items-center justify-center text-[#0078BF]"
                 style={{ background: 'rgba(0,120,191,0.09)' }}
               >
-                <TbLayersSubtract size={16} />
+                <TbLayersSubtract size={14} />
               </div>
               <div>
-                <div className="text-[9px] font-bold uppercase tracking-[0.12em] text-slate-400">Services</div>
-                <div className="text-[13px] font-bold text-[#0A1929]">6+ Core areas</div>
+                <div className="text-[8.5px] font-bold uppercase tracking-[0.12em] text-slate-400">Services</div>
+                <div className="text-[12px] font-bold text-[#0A1929]">6+ Core areas</div>
               </div>
             </motion.div>
           </motion.div>
@@ -138,13 +154,13 @@ const About = () => {
               <span className="text-[#0078BF]">that outlast the hype</span>
             </h2>
 
-            {/* Body */}
-            <p className="text-[14.5px] leading-[1.85] text-[#0A1929] mb-3">
+            {/* Body — larger text */}
+            <p className="text-[16px] leading-[1.85] text-[#0A1929] mb-4">
               Most agencies hand you a deliverable and disappear. Quebeta embeds —{' '}
               <strong className="font-semibold">strategy wired into every pixel, every system, every campaign</strong>{' '}
               until growth becomes the default.
             </p>
-            <p className="text-[14px] leading-[1.85] text-[#0A1929] mb-10">
+            <p className="text-[16px] leading-[1.85] text-[#0A1929] mb-10">
               We think like co-founders, move like an agency, and stay accountable to your revenue — not your applause.
             </p>
 
@@ -174,14 +190,14 @@ const About = () => {
                   </motion.div>
                   <div className="flex-1">
                     <motion.div
-                      className="text-[13.5px] font-bold mb-1"
+                      className="text-[14px] font-bold mb-1"
                       animate={{ color: activePoint === i ? '#0078BF' : '#0A1929' }}
                       transition={{ duration: 0.18 }}
                       style={{ fontFamily: 'var(--font-heading)' }}
                     >
                       {p.title}
                     </motion.div>
-                    <div className="text-[13px] leading-[1.6] text-[#0A1929]">{p.desc}</div>
+                    <div className="text-[13.5px] leading-[1.6] text-[#0A1929]">{p.desc}</div>
                   </div>
                   <motion.div
                     animate={{ opacity: activePoint === i ? 1 : 0, x: activePoint === i ? 0 : -5 }}
