@@ -15,7 +15,6 @@ const Industries = () => {
   const [isPaused, setIsPaused] = useState(false);
 
   const currentIndex = ((step % industries.length) + industries.length) % industries.length;
-
   const nextStep = useCallback(() => setStep((prev) => prev + 1), []);
 
   const handleChipClick = (index) => {
@@ -32,12 +31,12 @@ const Industries = () => {
   const getCardStatus = (index) => {
     const diff = index - currentIndex;
     const len = industries.length;
-    let normalizedDiff = diff;
-    if (diff > len / 2) normalizedDiff -= len;
-    if (diff < -len / 2) normalizedDiff += len;
-    if (normalizedDiff === 0) return 'active';
-    if (normalizedDiff === -1) return 'prev';
-    if (normalizedDiff === 1) return 'next';
+    let d = diff;
+    if (diff > len / 2) d -= len;
+    if (diff < -len / 2) d += len;
+    if (d === 0) return 'active';
+    if (d === -1) return 'prev';
+    if (d === 1) return 'next';
     return 'hidden';
   };
 
@@ -57,29 +56,38 @@ const Industries = () => {
             Deep expertise across <span className="gradient-text">every vertical</span>
           </h2>
           <p className="section-subtitle">
-            From bootstrapped startups to established enterprises we've helped
+            From bootstrapped startups to established enterprises — we've helped
             teams in every industry ship products that move the needle.
           </p>
         </motion.div>
 
-        {/* Carousel — matches 21st.dev layout exactly */}
-        <div className="relative overflow-hidden rounded-[2.5rem] flex flex-col lg:flex-row"
-          style={{ minHeight: '520px', border: '1px solid rgba(0,120,191,0.12)' }}>
+        {/* ── Carousel wrapper ── */}
+        <motion.div
+          className="relative overflow-hidden rounded-[2rem] flex flex-col lg:flex-row"
+          style={{ minHeight: '540px', boxShadow: 'var(--shadow-xl)' }}
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
 
           {/* ── Left panel ── */}
           <div
-            className="w-full lg:w-[40%] relative flex flex-col items-start justify-center overflow-hidden px-8 md:px-16 lg:pl-16"
-            style={{ background: 'var(--brand-primary)', minHeight: '350px' }}
+            className="w-full lg:w-[42%] relative flex flex-col items-start justify-center overflow-hidden px-10 lg:px-14"
+            style={{ background: 'var(--brand-primary)', minHeight: '360px' }}
           >
             {/* Top fade */}
-            <div className="absolute inset-x-0 top-0 h-16 z-40 pointer-events-none"
-              style={{ background: 'linear-gradient(to bottom, var(--brand-primary) 0%, transparent 100%)' }} />
+            <div className="absolute inset-x-0 top-0 h-20 z-40 pointer-events-none"
+              style={{ background: 'linear-gradient(to bottom, var(--brand-primary), transparent)' }} />
             {/* Bottom fade */}
-            <div className="absolute inset-x-0 bottom-0 h-16 z-40 pointer-events-none"
-              style={{ background: 'linear-gradient(to top, var(--brand-primary) 0%, transparent 100%)' }} />
+            <div className="absolute inset-x-0 bottom-0 h-20 z-40 pointer-events-none"
+              style={{ background: 'linear-gradient(to top, var(--brand-primary), transparent)' }} />
+            {/* Subtle texture */}
+            <div className="absolute inset-0 pointer-events-none opacity-[0.04]"
+              style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '28px 28px' }} />
 
-            <div className="relative w-full h-full flex items-center justify-start z-20"
-              style={{ minHeight: `${ITEM_HEIGHT * 5}px` }}>
+            <div className="relative w-full flex items-center justify-start z-20"
+              style={{ height: `${ITEM_HEIGHT * 5}px` }}>
               {industries.map((industry, index) => {
                 const Icon = industry.icon;
                 const isActive = index === currentIndex;
@@ -101,18 +109,18 @@ const Industries = () => {
                       onClick={() => handleChipClick(index)}
                       onMouseEnter={() => setIsPaused(true)}
                       onMouseLeave={() => setIsPaused(false)}
-                      className="relative flex items-center gap-4 px-6 md:px-10 lg:px-8 py-3.5 md:py-5 lg:py-4 rounded-full transition-all duration-700 text-left"
+                      className="relative flex items-center gap-3 px-6 py-3.5 rounded-full transition-all duration-500 text-left"
                       style={{
                         background: isActive ? '#fff' : 'transparent',
-                        color: isActive ? 'var(--brand-primary)' : 'rgba(255,255,255,0.6)',
-                        border: isActive ? '1px solid #fff' : '1px solid rgba(255,255,255,0.2)',
+                        color: isActive ? 'var(--brand-primary)' : 'rgba(255,255,255,0.65)',
+                        border: isActive ? '1.5px solid #fff' : '1.5px solid rgba(255,255,255,0.18)',
+                        fontFamily: 'var(--font-body)',
                       }}
                     >
-                      <span className={`text-[18px] flex-shrink-0 transition-colors duration-500 ${isActive ? 'text-[var(--brand-primary)]' : 'text-white/40'}`}>
+                      <span className="text-[17px] flex-shrink-0" style={{ color: isActive ? 'var(--brand-primary)' : 'rgba(255,255,255,0.5)' }}>
                         <Icon />
                       </span>
-                      <span className="font-normal text-sm md:text-[15px] tracking-tight whitespace-nowrap uppercase"
-                        style={{ fontFamily: 'var(--font-body)' }}>
+                      <span className="text-[13px] font-semibold tracking-[0.07em] uppercase whitespace-nowrap">
                         {industry.name}
                       </span>
                     </button>
@@ -122,11 +130,16 @@ const Industries = () => {
             </div>
           </div>
 
-          {/* ── Right panel — image cards exactly like 21st.dev ── */}
-          <div className="flex-1 relative flex items-center justify-center py-16 md:py-24 lg:py-16 px-6 md:px-12 lg:px-10 overflow-hidden"
-            style={{ background: '#fff', borderTop: '1px solid rgba(0,120,191,0.08)' }}>
+          {/* ── Right panel ── */}
+          <div
+            className="flex-1 relative flex items-center justify-center overflow-hidden py-14 px-8 lg:px-12"
+            style={{ background: '#F8FAFC' }}
+          >
+            {/* Subtle radial glow behind cards */}
+            <div className="absolute inset-0 pointer-events-none"
+              style={{ background: 'radial-gradient(ellipse at 60% 50%, rgba(0,120,191,0.07) 0%, transparent 70%)' }} />
 
-            <div className="relative w-full max-w-[420px]" style={{ aspectRatio: '4/5' }}>
+            <div className="relative w-full max-w-[360px]" style={{ aspectRatio: '3/4' }}>
               {industries.map((industry, index) => {
                 const status = getCardStatus(index);
                 const isActive = status === 'active';
@@ -136,56 +149,51 @@ const Industries = () => {
                 return (
                   <motion.div
                     key={industry.name}
-                    className="absolute inset-0 rounded-[2rem] md:rounded-[2.8rem] overflow-hidden border-4 md:border-8 bg-white origin-center"
-                    style={{ borderColor: '#fff' }}
+                    className="absolute inset-0 rounded-[1.75rem] overflow-hidden origin-center"
+                    style={{ border: '6px solid #fff', boxShadow: isActive ? '0 32px 80px rgba(0,0,0,0.18)' : 'none' }}
                     initial={false}
                     animate={{
-                      x: isActive ? 0 : isPrev ? -100 : isNext ? 100 : 0,
-                      scale: isActive ? 1 : isPrev || isNext ? 0.85 : 0.7,
+                      x: isActive ? 0 : isPrev ? -90 : isNext ? 90 : 0,
+                      scale: isActive ? 1 : isPrev || isNext ? 0.86 : 0.72,
                       opacity: isActive ? 1 : isPrev || isNext ? 0.4 : 0,
-                      rotate: isPrev ? -3 : isNext ? 3 : 0,
+                      rotate: isPrev ? -4 : isNext ? 4 : 0,
                       zIndex: isActive ? 20 : isPrev || isNext ? 10 : 0,
                       pointerEvents: isActive ? 'auto' : 'none',
                     }}
                     transition={{ type: 'spring', stiffness: 260, damping: 25, mass: 0.8 }}
                   >
-                    {/* Image — replace src with your own per industry */}
                     <img
-                      src={industry.image || `https://images.unsplash.com/photo-${1500000000000 + index * 10000000}?w=600&q=80`}
+                      src={industry.image}
                       alt={industry.name}
                       className="w-full h-full object-cover transition-all duration-700"
-                      style={{
-                        filter: isActive ? 'none' : 'grayscale(1) blur(2px) brightness(0.75)',
-                      }}
+                      style={{ filter: isActive ? 'none' : 'grayscale(1) blur(2px) brightness(0.7)' }}
                     />
 
-                    {/* Bottom overlay — same as 21st.dev */}
                     <AnimatePresence>
                       {isActive && (
                         <motion.div
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: 10 }}
-                          className="absolute inset-x-0 bottom-0 p-10 pt-32 flex flex-col justify-end pointer-events-none"
-                          style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 60%, transparent 100%)' }}
+                          className="absolute inset-x-0 bottom-0 p-8 pt-28 flex flex-col justify-end pointer-events-none"
+                          style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.5) 55%, transparent 100%)' }}
                         >
-                          <div className="px-4 py-1.5 rounded-full text-[11px] font-normal uppercase tracking-[0.2em] w-fit mb-3"
-                            style={{ background: '#fff', color: 'var(--brand-primary)', border: '1px solid rgba(0,120,191,0.2)' }}>
-                            {index + 1} • {industry.name}
+                          <div className="px-3.5 py-1.5 rounded-full text-[10px] font-semibold uppercase tracking-[0.18em] w-fit mb-3"
+                            style={{ background: '#fff', color: 'var(--brand-primary)' }}>
+                            {String(index + 1).padStart(2, '0')} · {industry.name}
                           </div>
-                          <p className="text-white font-normal text-xl md:text-2xl leading-tight tracking-tight"
-                            style={{ textShadow: '0 2px 8px rgba(0,0,0,0.4)' }}>
+                          <p className="text-white font-normal text-xl leading-snug tracking-tight"
+                            style={{ textShadow: '0 2px 12px rgba(0,0,0,0.5)' }}>
                             {industry.desc}
                           </p>
                         </motion.div>
                       )}
                     </AnimatePresence>
 
-                    {/* Top-left live dot — same as 21st.dev */}
-                    <div className={`absolute top-8 left-8 flex items-center gap-3 transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-0'}`}>
-                      <div className="w-2 h-2 rounded-full bg-white"
-                        style={{ boxShadow: '0 0 10px white' }} />
-                      <span className="text-white/80 text-[10px] font-normal uppercase tracking-[0.3em]"
+                    <div className={`absolute top-6 left-6 flex items-center gap-2 transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-0'}`}>
+                      <div className="w-[7px] h-[7px] rounded-full bg-white animate-pulse"
+                        style={{ boxShadow: '0 0 8px white' }} />
+                      <span className="text-white/75 text-[9px] font-medium uppercase tracking-[0.3em]"
                         style={{ fontFamily: 'monospace' }}>
                         Live Session
                       </span>
@@ -196,7 +204,7 @@ const Industries = () => {
             </div>
           </div>
 
-        </div>
+        </motion.div>
       </div>
     </section>
   );
