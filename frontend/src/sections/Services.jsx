@@ -129,7 +129,7 @@ const Services = () => {
         >
           <div className="section-eyebrow">What We Do</div>
           {/* Heading overrides the clamp() in section-title to a fixed 30px */}
-          <h2 className="section-title" style={{ fontSize: '1.875rem' }}>
+          <h2 className="section-title">
             End-to-end solutions to{' '}
             <span className="gradient-text">build, launch & grow</span> your business
           </h2>

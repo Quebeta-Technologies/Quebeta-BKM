@@ -82,13 +82,13 @@ h1,h2,h3,h4,h5,h6 {
   .section-header { @apply text-center max-w-[860px] mx-auto mb-16; }
 
   .section-eyebrow {
-    @apply text-[13px] font-semibold tracking-[0.08em] uppercase mb-5 block;
+    @apply text-[14px] font-semibold tracking-[0.08em] uppercase mb-5 block;
     font-family: 'Google Sans', sans-serif;
     color: var(--brand-primary);
   }
 
   .section-title {
-    font-size: clamp(2rem, 4.5vw, 3.25rem);
+    font-size: clamp(1.5rem, 3vw, 2.1875rem);
     font-family: 'Google Sans Display', 'Google Sans', sans-serif;
     @apply mb-5;
   }
