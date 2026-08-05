@@ -1,232 +1,434 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FiTrendingUp, FiArrowRight } from 'react-icons/fi';
-import { TbChessKnight, TbLayersSubtract } from 'react-icons/tb';
+import { FiArrowRight, FiAward, FiUsers, FiZap } from 'react-icons/fi';
+import { TbChessKnight, TbLayersSubtract, TbTrendingUp, TbBuildingSkyscraper, TbRocket } from 'react-icons/tb';
+
+const stats = [
+  { value: '98%', label: 'Client Retention', icon: <FiUsers size={14} /> },
+  { value: '6+', label: 'Core Services', icon: <TbLayersSubtract size={14} /> },
+  { value: '50+', label: 'Brands Built', icon: <FiAward size={14} /> },
+  { value: '4', label: 'Years of Growth', icon: <TbTrendingUp size={14} /> },
+];
 
 const points = [
   {
-    icon: <TbChessKnight size={18} />,
+    icon: <TbChessKnight size={20} />,
     title: 'Strategy before everything',
-    desc: 'We plan before we design. Your brand gets direction, not just decoration.',
+    desc: 'We plan before we design. Your brand gets direction, not just decoration — every decision is tied to a business outcome.',
   },
   {
-    icon: <TbLayersSubtract size={18} />,
+    icon: <TbLayersSubtract size={20} />,
     title: 'One team, end to end',
-    desc: 'Brand, tech, AI, marketing — no vendor juggling, no handoff friction.',
+    desc: 'Brand, tech, AI, marketing — no vendor juggling, no handoff friction. One team accountable for all of it.',
   },
   {
-    icon: <FiTrendingUp size={18} />,
+    icon: <TbTrendingUp size={20} />,
     title: 'Built for revenue, not applause',
-    desc: 'Every deliverable is tied to a metric that moves your business forward.',
+    desc: 'Every deliverable is tied to a metric that moves your business forward. We track numbers, not compliments.',
   },
+];
+
+const services = [
+  'Business Strategy',
+  'Brand Identity',
+  'Web Presence',
+  'AI-Driven Systems',
+  'Digital Marketing',
+  'PR & Communications',
 ];
 
 const About = () => {
   const [activePoint, setActivePoint] = useState(null);
-  const [imgHovered, setImgHovered] = useState(false);
 
   return (
-    <section id="about" className="section bg-white">
-      <div className="section-container">
-        <div className="grid grid-cols-1 lg:grid-cols-[400px_1fr] gap-16 xl:gap-24 items-center">
+    <section
+      id="about"
+      className="relative bg-white overflow-hidden"
+      style={{ fontFamily: "'Montserrat', sans-serif" }}
+    >
+      {/* Subtle top border accent */}
+      <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: 'linear-gradient(90deg, transparent, #0078BF 40%, #1CBBEE 60%, transparent)' }} />
 
-          {/* LEFT — Image with floating cards */}
+      <div className="section-container py-24 lg:py-32">
+
+        {/* ── EYEBROW ── */}
+        <motion.div
+          className="flex items-center gap-3 mb-16"
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="w-8 h-[2px] bg-[#0078BF]" />
+          <span style={{ fontSize: '10px', fontWeight: 800, letterSpacing: '0.2em', color: '#0078BF', textTransform: 'uppercase' }}>
+            About Quebeta
+          </span>
+        </motion.div>
+
+        {/* ── MAIN GRID ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 xl:gap-24 items-start">
+
+          {/* ══════════ LEFT COLUMN ══════════ */}
           <motion.div
-            className="relative"
-            initial={{ opacity: 0, x: -20 }}
+            initial={{ opacity: 0, x: -24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
-            {/* Main image — smaller, square-ish */}
-            <div
-              className="relative rounded-[20px] overflow-hidden w-full cursor-pointer"
-              style={{ aspectRatio: '3/3.6', boxShadow: '0 20px 60px rgba(0,0,0,0.13)' }}
-              onMouseEnter={() => setImgHovered(true)}
-              onMouseLeave={() => setImgHovered(false)}
+            {/* Big headline */}
+            <h2
+              style={{
+                fontFamily: "'Montserrat', sans-serif",
+                fontSize: 'clamp(32px, 4vw, 52px)',
+                fontWeight: 800,
+                lineHeight: 1.05,
+                letterSpacing: '-0.03em',
+                color: '#0A1929',
+                marginBottom: '28px',
+              }}
             >
-              <img
-                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=900&q=85"
-                alt="Quebeta team"
-                className="w-full h-full object-cover"
-              />
+              We build businesses<br />
+              <span style={{ color: '#0078BF' }}>that outlast</span>{' '}
+              <span style={{ color: '#0A1929' }}>the hype.</span>
+            </h2>
 
-              {/* Always-on bottom fade */}
+            {/* Body copy */}
+            <p style={{ fontSize: '15px', lineHeight: 1.9, color: '#374151', marginBottom: '16px', fontWeight: 400 }}>
+              Most agencies hand you a deliverable and disappear. Quebeta embeds —{' '}
+              <strong style={{ fontWeight: 700, color: '#0A1929' }}>strategy wired into every pixel, every system, every campaign</strong>{' '}
+              until growth becomes the default.
+            </p>
+            <p style={{ fontSize: '15px', lineHeight: 1.9, color: '#374151', marginBottom: '36px', fontWeight: 400 }}>
+              We think like co-founders, move like an agency, and stay accountable to your revenue — not your applause. From a single startup idea to a fully scaled brand, we're the team you don't have to manage.
+            </p>
+
+            {/* CEO Quote block */}
+            <motion.div
+              className="relative mb-10"
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
               <div
-                className="absolute inset-0"
-                style={{ background: 'linear-gradient(to top, rgba(10,25,41,0.82) 0%, rgba(10,25,41,0.1) 50%, transparent 100%)' }}
-              />
-
-              {/* Founded pill — top left, doesn't block quote */}
-              <div className="absolute top-5 left-5">
-                <div className="bg-white rounded-xl px-3.5 py-2 flex items-center gap-2" style={{ boxShadow: '0 4px 16px rgba(0,0,0,0.10)' }}>
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#0078BF]" />
+                style={{
+                  borderLeft: '3px solid #0078BF',
+                  paddingLeft: '24px',
+                  paddingTop: '4px',
+                  paddingBottom: '4px',
+                }}
+              >
+                <p style={{ fontSize: '15px', lineHeight: 1.8, color: '#0A1929', fontStyle: 'italic', fontWeight: 500, marginBottom: '12px' }}>
+                  "I know how tough the startup journey can be. At Quebeta, we make sure you're never building alone — we bring the strategy, systems, and execution so you can focus on growing."
+                </p>
+                <div className="flex items-center gap-3">
+                  <div
+                    style={{
+                      width: '32px',
+                      height: '32px',
+                      borderRadius: '50%',
+                      background: '#0078BF',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: 'white',
+                      fontSize: '12px',
+                      fontWeight: 700,
+                    }}
+                  >
+                    RC
+                  </div>
                   <div>
-                    <div className="text-[8.5px] font-bold uppercase tracking-[0.12em] text-slate-400">Founded</div>
-                    <div className="text-[12px] font-bold text-[#0A1929]">2020 · Pune</div>
+                    <div style={{ fontSize: '12px', fontWeight: 700, color: '#0A1929', letterSpacing: '0.02em' }}>Rutika Channawar</div>
+                    <div style={{ fontSize: '11px', color: '#0078BF', fontWeight: 600 }}>Founder & CEO, Quebeta</div>
                   </div>
                 </div>
               </div>
+            </motion.div>
 
-              {/* CEO quote — always visible, slides up more on hover */}
-              <motion.div
-                className="absolute bottom-0 left-0 right-0 p-6"
-                animate={{ y: imgHovered ? -4 : 0 }}
-                transition={{ duration: 0.3, ease: 'easeOut' }}
-              >
-                <motion.p
-                  className="text-[13px] leading-[1.65] italic mb-3"
-                  animate={{ color: imgHovered ? 'rgba(255,255,255,1)' : 'rgba(255,255,255,0.75)' }}
-                  transition={{ duration: 0.25 }}
-                >
-                  "Too many smart founders fail — not from bad ideas, but bad execution."
-                </motion.p>
+            {/* Stats row */}
+            <div className="grid grid-cols-4 gap-4 mb-10">
+              {stats.map((s, i) => (
                 <motion.div
-                  className="flex items-center gap-2.5"
-                  animate={{ opacity: imgHovered ? 1 : 0.6 }}
-                  transition={{ duration: 0.25 }}
+                  key={s.label}
+                  className="text-center"
+                  initial={{ opacity: 0, y: 8 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.35, delay: 0.06 * i }}
                 >
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#1CBBEE] animate-pulse" />
-                  <span className="text-[11.5px] font-bold text-white">Rutika Channawar</span>
-                  <span className="text-[11px] text-white/60">· Founder & CEO</span>
+                  <div style={{ fontSize: 'clamp(22px, 3vw, 30px)', fontWeight: 800, color: '#0078BF', letterSpacing: '-0.03em', lineHeight: 1 }}>
+                    {s.value}
+                  </div>
+                  <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.06em', textTransform: 'uppercase', marginTop: '4px' }}>
+                    {s.label}
+                  </div>
                 </motion.div>
+              ))}
+            </div>
+
+            {/* Services tags */}
+            <div style={{ marginBottom: '12px' }}>
+              <div style={{ fontSize: '10px', fontWeight: 700, color: '#94a3b8', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '10px' }}>
+                What we cover
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {services.map((s) => (
+                  <span
+                    key={s}
+                    style={{
+                      fontSize: '11.5px',
+                      fontWeight: 600,
+                      color: '#0078BF',
+                      background: 'rgba(0,120,191,0.07)',
+                      border: '1px solid rgba(0,120,191,0.15)',
+                      borderRadius: '6px',
+                      padding: '5px 12px',
+                      letterSpacing: '0.01em',
+                    }}
+                  >
+                    {s}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* ══════════ RIGHT COLUMN ══════════ */}
+          <motion.div
+            initial={{ opacity: 0, x: 24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {/* Image block */}
+            <div className="relative mb-10">
+              {/* Main image */}
+              <div
+                style={{
+                  borderRadius: '16px',
+                  overflow: 'hidden',
+                  aspectRatio: '4/3',
+                  position: 'relative',
+                  boxShadow: '0 24px 64px rgba(0,0,0,0.12)',
+                }}
+              >
+                <img
+                  src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=900&q=85"
+                  alt="Quebeta team at work"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+                {/* Dark overlay */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: 'linear-gradient(135deg, rgba(10,25,41,0.4) 0%, transparent 60%)',
+                  }}
+                />
+                {/* Founded badge */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: '20px',
+                    left: '20px',
+                    background: 'white',
+                    borderRadius: '10px',
+                    padding: '10px 16px',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.12)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                  }}
+                >
+                  <TbBuildingSkyscraper size={16} color="#0078BF" />
+                  <div>
+                    <div style={{ fontSize: '9px', fontWeight: 700, color: '#94a3b8', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Founded</div>
+                    <div style={{ fontSize: '13px', fontWeight: 800, color: '#0A1929' }}>2020 · Pune</div>
+                  </div>
+                </div>
+                {/* Bottom label */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    bottom: '20px',
+                    right: '20px',
+                    background: '#0078BF',
+                    borderRadius: '8px',
+                    padding: '8px 14px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                  }}
+                >
+                  <TbRocket size={14} color="white" />
+                  <span style={{ fontSize: '12px', fontWeight: 700, color: 'white', letterSpacing: '0.04em' }}>From Idea to Impact</span>
+                </div>
+              </div>
+
+              {/* Floating client retention card */}
+              <motion.div
+                style={{
+                  position: 'absolute',
+                  bottom: '-20px',
+                  left: '-20px',
+                  background: 'white',
+                  borderRadius: '14px',
+                  padding: '16px 20px',
+                  boxShadow: '0 12px 40px rgba(0,0,0,0.13)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '14px',
+                  minWidth: '180px',
+                }}
+                initial={{ opacity: 0, y: 14 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+              >
+                <div
+                  style={{
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '10px',
+                    background: 'rgba(0,120,191,0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#0078BF',
+                    flexShrink: 0,
+                  }}
+                >
+                  <FiUsers size={18} />
+                </div>
+                <div>
+                  <div style={{ fontSize: '9px', fontWeight: 700, color: '#94a3b8', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '2px' }}>Client Retention</div>
+                  <div style={{ fontSize: '26px', fontWeight: 800, color: '#0A1929', lineHeight: 1, letterSpacing: '-0.03em' }}>
+                    98<span style={{ color: '#0078BF' }}>%</span>
+                  </div>
+                </div>
               </motion.div>
             </div>
 
-            {/* Floating card — right side mid */}
-            <motion.div
-              className="absolute -right-8 top-[42%] -translate-y-1/2 bg-white rounded-xl px-5 py-3.5"
-              style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.12)' }}
-              initial={{ opacity: 0, x: 16 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.45 }}
-            >
-              <div className="text-[8.5px] font-bold uppercase tracking-[0.12em] text-slate-400 mb-0.5">Client retention</div>
-              <div className="text-[24px] font-extrabold text-[#0A1929] leading-none" style={{ fontFamily: 'var(--font-heading)' }}>
-                98<span className="text-[#0078BF]">%</span>
+            {/* Spacer for floating card */}
+            <div style={{ height: '20px' }} />
+
+            {/* Why we're different — 3 points */}
+            <div style={{ marginBottom: '32px' }}>
+              <div style={{ fontSize: '10px', fontWeight: 700, color: '#94a3b8', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '16px' }}>
+                Why Quebeta
               </div>
-            </motion.div>
-
-            {/* Floating card — bottom left */}
-            <motion.div
-              className="absolute -bottom-5 left-5 bg-white rounded-xl px-4 py-3 flex items-center gap-3"
-              style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.11)' }}
-              initial={{ opacity: 0, y: 14 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-            >
-              <div
-                className="w-7 h-7 rounded-[7px] flex items-center justify-center text-[#0078BF]"
-                style={{ background: 'rgba(0,120,191,0.09)' }}
-              >
-                <TbLayersSubtract size={14} />
-              </div>
-              <div>
-                <div className="text-[8.5px] font-bold uppercase tracking-[0.12em] text-slate-400">Services</div>
-                <div className="text-[12px] font-bold text-[#0A1929]">6+ Core areas</div>
-              </div>
-            </motion.div>
-          </motion.div>
-
-          {/* RIGHT — All content */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          >
-            {/* Eyebrow */}
-            <div className="flex items-center gap-3 mb-5">
-              <span className="w-5 h-[1.5px] bg-[#0078BF] inline-block" />
-              <span className="text-[11px] font-bold tracking-[0.16em] uppercase text-[#0078BF]">
-                About Quebeta
-              </span>
-            </div>
-
-            {/* Heading */}
-            <h2
-              className="font-extrabold leading-[1.1] tracking-[-0.025em] text-[#0A1929] mb-5"
-              style={{ fontFamily: 'var(--font-heading)', fontSize: '30px' }}
-            >
-              We build businesses{' '}
-              <span className="text-[#0078BF]">that outlast the hype</span>
-            </h2>
-
-            {/* Body — larger text */}
-            <p className="text-[16px] leading-[1.85] text-[#0A1929] mb-4">
-              Most agencies hand you a deliverable and disappear. Quebeta embeds —{' '}
-              <strong className="font-semibold">strategy wired into every pixel, every system, every campaign</strong>{' '}
-              until growth becomes the default.
-            </p>
-            <p className="text-[16px] leading-[1.85] text-[#0A1929] mb-10">
-              We think like co-founders, move like an agency, and stay accountable to your revenue — not your applause.
-            </p>
-
-            {/* Points */}
-            <div className="flex flex-col mb-10">
-              {points.map((p, i) => (
-                <motion.div
-                  key={p.title}
-                  className="flex items-start gap-4 py-[18px] border-b border-slate-100 cursor-default"
-                  style={{ borderTop: i === 0 ? '1px solid #f1f5f9' : undefined }}
-                  onMouseEnter={() => setActivePoint(i)}
-                  onMouseLeave={() => setActivePoint(null)}
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.35, delay: 0.07 * i }}
-                >
+              <div className="flex flex-col">
+                {points.map((p, i) => (
                   <motion.div
-                    className="w-9 h-9 min-w-[36px] rounded-[10px] flex items-center justify-center"
-                    animate={{
-                      background: activePoint === i ? 'rgba(0,120,191,0.12)' : 'rgba(0,120,191,0.07)',
-                      color: activePoint === i ? '#0078BF' : '#93c4dc',
+                    key={p.title}
+                    className="flex items-start gap-4"
+                    style={{
+                      padding: '18px 0',
+                      borderBottom: i < points.length - 1 ? '1px solid #f1f5f9' : 'none',
+                      borderTop: i === 0 ? '1px solid #f1f5f9' : 'none',
+                      cursor: 'default',
                     }}
-                    transition={{ duration: 0.18 }}
+                    onMouseEnter={() => setActivePoint(i)}
+                    onMouseLeave={() => setActivePoint(null)}
+                    initial={{ opacity: 0, y: 8 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.35, delay: 0.07 * i }}
                   >
-                    {p.icon}
-                  </motion.div>
-                  <div className="flex-1">
                     <motion.div
-                      className="text-[14px] font-bold mb-1"
-                      animate={{ color: activePoint === i ? '#0078BF' : '#0A1929' }}
-                      transition={{ duration: 0.18 }}
-                      style={{ fontFamily: 'var(--font-heading)' }}
+                      style={{
+                        width: '40px',
+                        height: '40px',
+                        minWidth: '40px',
+                        borderRadius: '10px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        transition: 'all 0.18s',
+                        background: activePoint === i ? 'rgba(0,120,191,0.12)' : 'rgba(0,120,191,0.06)',
+                        color: activePoint === i ? '#0078BF' : '#93c4dc',
+                      }}
                     >
-                      {p.title}
+                      {p.icon}
                     </motion.div>
-                    <div className="text-[13.5px] leading-[1.6] text-[#0A1929]">{p.desc}</div>
-                  </div>
-                  <motion.div
-                    animate={{ opacity: activePoint === i ? 1 : 0, x: activePoint === i ? 0 : -5 }}
-                    transition={{ duration: 0.16 }}
-                    className="text-[#0078BF] mt-0.5"
-                  >
-                    <FiArrowRight size={14} />
+                    <div className="flex-1">
+                      <div
+                        style={{
+                          fontSize: '13.5px',
+                          fontWeight: 700,
+                          marginBottom: '4px',
+                          color: activePoint === i ? '#0078BF' : '#0A1929',
+                          transition: 'color 0.18s',
+                          letterSpacing: '0.01em',
+                        }}
+                      >
+                        {p.title}
+                      </div>
+                      <div style={{ fontSize: '13px', lineHeight: 1.65, color: '#64748b' }}>
+                        {p.desc}
+                      </div>
+                    </div>
+                    <motion.div
+                      animate={{ opacity: activePoint === i ? 1 : 0, x: activePoint === i ? 0 : -6 }}
+                      transition={{ duration: 0.16 }}
+                      style={{ color: '#0078BF', marginTop: '2px' }}
+                    >
+                      <FiArrowRight size={14} />
+                    </motion.div>
                   </motion.div>
-                </motion.div>
-              ))}
+                ))}
+              </div>
             </div>
 
             {/* CTAs */}
             <div className="flex items-center gap-6">
               <motion.a
                 href="#contact"
-                className="inline-flex items-center gap-2 bg-[#0078BF] text-white text-[13px] font-bold px-6 py-3 rounded-full hover:bg-[#005fa3] transition-colors duration-200"
+                className="inline-flex items-center gap-2"
+                style={{
+                  background: '#0078BF',
+                  color: 'white',
+                  fontSize: '12.5px',
+                  fontWeight: 700,
+                  padding: '13px 26px',
+                  borderRadius: '100px',
+                  letterSpacing: '0.03em',
+                  textDecoration: 'none',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  transition: 'background 0.2s',
+                  fontFamily: "'Montserrat', sans-serif",
+                }}
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
+                onMouseEnter={e => e.currentTarget.style.background = '#005fa3'}
+                onMouseLeave={e => e.currentTarget.style.background = '#0078BF'}
               >
                 Let's talk
                 <FiArrowRight size={13} />
               </motion.a>
               <a
                 href="#services"
-                className="text-[13px] font-semibold text-[#0A1929] hover:text-[#0078BF] transition-colors duration-200 flex items-center gap-1.5 group"
+                className="group"
+                style={{
+                  fontSize: '12.5px',
+                  fontWeight: 700,
+                  color: '#0A1929',
+                  textDecoration: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  letterSpacing: '0.02em',
+                  transition: 'color 0.2s',
+                  fontFamily: "'Montserrat', sans-serif",
+                }}
+                onMouseEnter={e => e.currentTarget.style.color = '#0078BF'}
+                onMouseLeave={e => e.currentTarget.style.color = '#0A1929'}
               >
                 See our services
-                <FiArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform duration-200" />
+                <FiArrowRight size={13} />
               </a>
             </div>
           </motion.div>
