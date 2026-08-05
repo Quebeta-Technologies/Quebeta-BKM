@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FiArrowRight, FiAward, FiUsers, FiZap } from 'react-icons/fi';
+import { FiArrowRight, FiAward, FiUsers } from 'react-icons/fi';
 import { TbChessKnight, TbLayersSubtract, TbTrendingUp, TbBuildingSkyscraper, TbRocket } from 'react-icons/tb';
 
 const stats = [
@@ -28,14 +28,6 @@ const points = [
   },
 ];
 
-const services = [
-  'Business Strategy',
-  'Brand Identity',
-  'Web Presence',
-  'AI-Driven Systems',
-  'Digital Marketing',
-  'PR & Communications',
-];
 
 const About = () => {
   const [activePoint, setActivePoint] = useState(null);
@@ -102,52 +94,8 @@ const About = () => {
               We think like co-founders, move like an agency, and stay accountable to your revenue — not your applause. From a single startup idea to a fully scaled brand, we're the team you don't have to manage.
             </p>
 
-            {/* CEO Quote block */}
-            <motion.div
-              className="relative mb-10"
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <div
-                style={{
-                  borderLeft: '3px solid #0078BF',
-                  paddingLeft: '24px',
-                  paddingTop: '4px',
-                  paddingBottom: '4px',
-                }}
-              >
-                <p style={{ fontSize: '15px', lineHeight: 1.8, color: '#0A1929', fontStyle: 'italic', fontWeight: 500, marginBottom: '12px' }}>
-                  "I know how tough the startup journey can be. At Quebeta, we make sure you're never building alone — we bring the strategy, systems, and execution so you can focus on growing."
-                </p>
-                <div className="flex items-center gap-3">
-                  <div
-                    style={{
-                      width: '32px',
-                      height: '32px',
-                      borderRadius: '50%',
-                      background: '#0078BF',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: 'white',
-                      fontSize: '12px',
-                      fontWeight: 700,
-                    }}
-                  >
-                    RC
-                  </div>
-                  <div>
-                    <div style={{ fontSize: '12px', fontWeight: 700, color: '#0A1929', letterSpacing: '0.02em' }}>Rutika Channawar</div>
-                    <div style={{ fontSize: '11px', color: '#0078BF', fontWeight: 600 }}>Founder & CEO, Quebeta</div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
             {/* Stats row */}
-            <div className="grid grid-cols-4 gap-4 mb-10">
+            <div className="grid grid-cols-4 gap-4 mb-0">
               {stats.map((s, i) => (
                 <motion.div
                   key={s.label}
@@ -167,31 +115,7 @@ const About = () => {
               ))}
             </div>
 
-            {/* Services tags */}
-            <div style={{ marginBottom: '12px' }}>
-              <div style={{ fontSize: '10px', fontWeight: 700, color: '#94a3b8', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '10px' }}>
-                What we cover
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {services.map((s) => (
-                  <span
-                    key={s}
-                    style={{
-                      fontSize: '11.5px',
-                      fontWeight: 600,
-                      color: '#0078BF',
-                      background: 'rgba(0,120,191,0.07)',
-                      border: '1px solid rgba(0,120,191,0.15)',
-                      borderRadius: '6px',
-                      padding: '5px 12px',
-                      letterSpacing: '0.01em',
-                    }}
-                  >
-                    {s}
-                  </span>
-                ))}
-              </div>
-            </div>
+
           </motion.div>
 
           {/* ══════════ RIGHT COLUMN ══════════ */}
