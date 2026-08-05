@@ -1,11 +1,8 @@
 import { useEffect } from 'react';
 import AOS from 'aos';
-
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-// ❌ removed: import ScrollProgress from './components/ScrollProgress';
 import ScrollToTop from './components/ScrollToTop';
-
 import Hero from './sections/Hero';
 import About from './sections/About';
 import Services from './sections/Services';
@@ -29,7 +26,6 @@ function App() {
 
   return (
     <>
-      {/* ❌ removed: <ScrollProgress /> */}
       <Navbar />
       <main>
         <Hero />
