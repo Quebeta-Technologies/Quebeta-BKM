@@ -56,7 +56,7 @@ const Industries = () => {
             Deep expertise across <span className="gradient-text">every vertical</span>
           </h2>
           <p className="section-subtitle">
-            From bootstrapped startups to established enterprises — we've helped
+            From bootstrapped startups to established enterprises we've helped
             teams in every industry ship products that move the needle.
           </p>
         </motion.div>
@@ -82,7 +82,7 @@ const Industries = () => {
             {/* Bottom fade */}
             <div className="absolute inset-x-0 bottom-0 h-20 z-40 pointer-events-none"
               style={{ background: 'linear-gradient(to top, var(--brand-primary), transparent)' }} />
-            {/* Subtle texture */}
+            {/* Subtle dot texture */}
             <div className="absolute inset-0 pointer-events-none opacity-[0.04]"
               style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '28px 28px' }} />
 
@@ -111,13 +111,14 @@ const Industries = () => {
                       onMouseLeave={() => setIsPaused(false)}
                       className="relative flex items-center gap-3 px-6 py-3.5 rounded-full transition-all duration-500 text-left"
                       style={{
-                        background: isActive ? '#fff' : 'transparent',
-                        color: isActive ? 'var(--brand-primary)' : 'rgba(255,255,255,0.65)',
-                        border: isActive ? '1.5px solid #fff' : '1.5px solid rgba(255,255,255,0.18)',
+                        background: isActive ? '#fff' : 'rgba(255,255,255,0.08)',
+                        color: isActive ? 'var(--brand-primary)' : 'rgba(255,255,255,0.85)',
+                        border: isActive ? '1.5px solid #fff' : '1.5px solid rgba(255,255,255,0.25)',
                         fontFamily: 'var(--font-body)',
                       }}
                     >
-                      <span className="text-[17px] flex-shrink-0" style={{ color: isActive ? 'var(--brand-primary)' : 'rgba(255,255,255,0.5)' }}>
+                      <span className="text-[17px] flex-shrink-0"
+                        style={{ color: isActive ? 'var(--brand-primary)' : 'rgba(255,255,255,0.75)' }}>
                         <Icon />
                       </span>
                       <span className="text-[13px] font-semibold tracking-[0.07em] uppercase whitespace-nowrap">
