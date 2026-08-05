@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
-import { FiUsers, FiTrendingUp, FiArrowRight } from 'react-icons/fi';
+import { FiUsers, FiTrendingUp, FiArrowRight, FiAward } from 'react-icons/fi';
 import { FaHandshake } from 'react-icons/fa';
-import { FiAward } from 'react-icons/fi';
+import { useRef, useEffect, useCallback, useState, useId } from 'react';
 
 const partnershipTypes = [
   {
@@ -40,27 +40,128 @@ const partnershipTypes = [
   },
 ];
 
+/* ─── Reduced-motion hook ─── */
+function useReducedMotion() {
+  const [reduced, setReduced] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  );
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setReduced(mq.matches);
+    const onChange = (e) => setReduced(e.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+  return reduced;
+}
+
+/* ─── Spring physics ─── */
+class Spring {
+  constructor(value, k, d) { this.x = value; this.v = 0; this.target = value; this.k = k; this.d = d; }
+  step(dt) {
+    const a = this.k * (this.target - this.x) - this.d * this.v;
+    this.v += a * dt; this.x += this.v * dt; return this.x;
+  }
+}
+
+/* ─── Beam card for non-featured ─── */
+function BeamCard({ children, className = '' }) {
+  const uid = useId().replace(/[^a-zA-Z0-9]/g, '');
+  const cls = `mk-beam-${uid}`;
+  const rootRef = useRef(null);
+  const reduced = useReducedMotion();
+  const speedRef = useRef(new Spring(42, 30, 11));
+  const angleRef = useRef(0);
+  const rafRef = useRef(0);
+
+  const paint = useCallback((angle) => {
+    const el = rootRef.current;
+    if (!el) return;
+    el.style.setProperty('--mk-a', `${(((angle % 360) + 360) % 360).toFixed(2)}deg`);
+  }, []);
+
+  useEffect(() => {
+    if (reduced) { paint(40); return; }
+    let last = 0;
+    const frame = (now) => {
+      if (!last) last = now;
+      const dt = Math.min((now - last) / 1000, 0.05);
+      last = now;
+      angleRef.current += speedRef.current.step(dt) * dt;
+      paint(angleRef.current);
+      rafRef.current = requestAnimationFrame(frame);
+    };
+    rafRef.current = requestAnimationFrame(frame);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [reduced, paint]);
+
+  const surge = useCallback(() => { speedRef.current.target = 240; }, []);
+  const settle = useCallback(() => { speedRef.current.target = 42; }, []);
+
+  const css = `
+.${cls} { --mk-a: 0deg; }
+.${cls} .beam-ring {
+  position: absolute; inset: -1px; border-radius: var(--radius-lg); pointer-events: none;
+  background: conic-gradient(from var(--mk-a),
+    transparent 0deg,
+    color-mix(in srgb, var(--brand-secondary) 4%, transparent) 18deg,
+    color-mix(in srgb, var(--brand-secondary) 55%, transparent) 46deg,
+    var(--brand-primary) 56deg,
+    color-mix(in srgb, var(--brand-primary) 22%, #fff) 60deg,
+    transparent 63deg,
+    transparent 198deg,
+    color-mix(in srgb, var(--brand-secondary) 4%, transparent) 216deg,
+    color-mix(in srgb, var(--brand-secondary) 50%, transparent) 244deg,
+    var(--brand-secondary) 254deg,
+    color-mix(in srgb, var(--brand-secondary) 26%, #fff) 258deg,
+    transparent 261deg,
+    transparent 360deg);
+  padding: 1.5px;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+}
+.${cls} .beam-glow {
+  position: absolute; inset: -1px; border-radius: var(--radius-lg); pointer-events: none; z-index: -1;
+  background: conic-gradient(from var(--mk-a),
+    transparent 0deg,
+    color-mix(in srgb, var(--brand-secondary) 55%, transparent) 46deg,
+    var(--brand-primary) 56deg,
+    color-mix(in srgb, var(--brand-primary) 22%, #fff) 60deg,
+    transparent 63deg,
+    transparent 360deg);
+  filter: blur(12px); opacity: 0.22;
+}`;
+
+  return (
+    <div
+      ref={rootRef}
+      className={`relative bg-white rounded-[var(--radius-lg)] service-card ${cls} ${className}`}
+      onPointerEnter={surge}
+      onPointerLeave={settle}
+    >
+      <style dangerouslySetInnerHTML={{ __html: css }} />
+      <div aria-hidden="true" className="beam-glow" />
+      <div aria-hidden="true" className="beam-ring" />
+      {children}
+    </div>
+  );
+}
+
 const Partnership = () => {
   return (
-    <section
-      className="section relative overflow-hidden"
-      style={{ background: 'linear-gradient(180deg, #F0F9FF 0%, #FFFFFF 100%)' }}
-    >
-      {/* Blobs */}
-      <div className="absolute w-[500px] h-[500px] rounded-full top-[-100px] right-[-150px] pointer-events-none"
-        style={{ background: 'rgba(0,120,191,0.4)', filter: 'blur(120px)', opacity: 0.35 }} />
-      <div className="absolute w-[400px] h-[400px] rounded-full bottom-[-100px] left-[-100px] pointer-events-none"
-        style={{ background: 'rgba(28,187,238,0.4)', filter: 'blur(120px)', opacity: 0.35 }} />
+    <section id="partnership" className="section bg-white">
+      <div className="section-container">
 
-      <div className="max-w-[1280px] mx-auto px-6 relative z-10">
         <motion.div
           className="section-header"
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.55 }}
         >
-          <div className="section-eyebrow"><span>●</span> Partnership Models</div>
+          <div className="section-eyebrow">Partnership Models</div>
           <h2 className="section-title">
             Ways to <span className="gradient-text">work with Quebeta</span>
           </h2>
@@ -70,81 +171,112 @@ const Partnership = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-[26px] mb-[60px]">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           {partnershipTypes.map((p, i) => {
             const Icon = p.icon;
+
+            if (p.featured) {
+              return (
+                <motion.div
+                  key={p.title}
+                  className="relative rounded-[var(--radius-lg)] p-8 text-white transition-transform duration-300 hover:-translate-y-1"
+                  style={{ background: 'var(--brand-primary)', isolation: 'isolate' }}
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                >
+                  {/* Most Popular badge */}
+                  <div className="absolute top-4 right-4 px-3 py-1 text-[11px] font-bold tracking-[0.06em] uppercase rounded-full"
+                    style={{ background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.3)', color: '#fff' }}>
+                    Most Popular
+                  </div>
+
+                  <div className="w-[52px] h-[52px] rounded-[var(--radius-md)] flex items-center justify-center text-[22px] mb-5"
+                    style={{ background: 'rgba(255,255,255,0.2)', color: '#fff' }}>
+                    <Icon />
+                  </div>
+
+                  <div className="text-[11px] font-semibold tracking-[0.1em] uppercase mb-1"
+                    style={{ color: 'rgba(255,255,255,0.75)' }}>
+                    {p.subtitle}
+                  </div>
+
+                  <h3 className="font-bold text-[1.3rem] mb-6 text-white"
+                    style={{ fontFamily: 'var(--font-heading)' }}>
+                    {p.title}
+                  </h3>
+
+                  <ul className="mb-8 flex flex-col">
+                    {p.features.map((f) => (
+                      <li key={f}
+                        className="flex items-center gap-3 py-[10px] text-[14px]"
+                        style={{ borderBottom: '1px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.9)' }}
+                      >
+                        <span className="w-[20px] h-[20px] min-w-[20px] rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0"
+                          style={{ background: 'rgba(255,255,255,0.2)', color: '#fff' }}>✓</span>
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <a href="#contact"
+                    className="inline-flex items-center gap-2 px-6 py-[11px] rounded-full font-semibold text-sm transition-all duration-300 hover:-translate-y-0.5"
+                    style={{ background: '#fff', color: 'var(--brand-primary)' }}>
+                    Talk to us <FiArrowRight />
+                  </a>
+                </motion.div>
+              );
+            }
+
             return (
               <motion.div
                 key={p.title}
-                className={`relative p-[40px_32px] rounded-[24px] transition-all duration-300
-                  ${p.featured
-                    ? 'text-white border-transparent scale-[1.03] shadow-[0_30px_70px_rgba(0,120,191,0.35)] hover:scale-[1.03] hover:-translate-y-[6px]'
-                    : 'bg-white hover:-translate-y-[6px] hover:shadow-[0_24px_60px_rgba(0,120,191,0.15)]'
-                  }`}
-                style={p.featured
-                  ? { background: 'linear-gradient(135deg, #0078BF 0%, #1CBBEE 100%)' }
-                  : { border: '1px solid rgba(0,120,191,0.1)' }
-                }
-                onMouseEnter={e => { if (!p.featured) e.currentTarget.style.borderColor = 'rgba(0,120,191,0.25)'; }}
-                onMouseLeave={e => { if (!p.featured) e.currentTarget.style.borderColor = 'rgba(0,120,191,0.1)'; }}
-                initial={{ opacity: 0, y: 40 }}
+                initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.15 }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                className="h-full"
               >
-                {p.featured && (
-                  <div className="absolute top-4 right-4 px-3 py-[5px] text-white text-[11px] font-bold tracking-[0.06em] uppercase rounded-full border"
-                    style={{ background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(10px)', borderColor: 'rgba(255,255,255,0.3)' }}>
-                    Most Popular
+                <BeamCard className="h-full transition-transform duration-300 hover:-translate-y-1">
+                  <div className="flex flex-col h-full p-8">
+
+                    <div className="w-[52px] h-[52px] rounded-[var(--radius-md)] flex items-center justify-center text-[22px] mb-5"
+                      style={{ background: 'rgba(0,120,191,0.08)', color: 'var(--brand-primary)' }}>
+                      <Icon />
+                    </div>
+
+                    <div className="text-[11px] font-semibold tracking-[0.1em] uppercase mb-1"
+                      style={{ color: 'var(--brand-primary)' }}>
+                      {p.subtitle}
+                    </div>
+
+                    <h3 className="font-bold text-[1.3rem] mb-6"
+                      style={{ fontFamily: 'var(--font-heading)', color: 'var(--brand-dark)' }}>
+                      {p.title}
+                    </h3>
+
+                    <ul className="mb-8 flex flex-col flex-grow">
+                      {p.features.map((f) => (
+                        <li key={f}
+                          className="flex items-center gap-3 py-[10px] text-[14px] text-slate-600"
+                          style={{ borderBottom: '1px solid rgba(0,120,191,0.07)' }}
+                        >
+                          <span className="w-[20px] h-[20px] min-w-[20px] rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0"
+                            style={{ background: 'rgba(0,120,191,0.08)', color: 'var(--brand-primary)' }}>✓</span>
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+
+                    <a href="#contact"
+                      className="inline-flex items-center gap-2 px-6 py-[11px] rounded-full font-semibold text-sm self-start transition-all duration-300 hover:-translate-y-0.5"
+                      style={{ background: 'rgba(0,120,191,0.07)', color: 'var(--brand-primary)' }}>
+                      Talk to us <FiArrowRight />
+                    </a>
+
                   </div>
-                )}
-
-                <div className={`w-[60px] h-[60px] rounded-[16px] flex items-center justify-center text-[28px] mb-5
-                  ${p.featured ? 'bg-white/20 text-white' : 'bg-[rgba(0,120,191,0.1)] text-[#0078BF]'}`}>
-                  <Icon />
-                </div>
-
-                <div className={`text-xs font-semibold tracking-[0.1em] uppercase mb-2
-                  ${p.featured ? 'text-white/80' : 'text-[#0078BF]'}`}>
-                  {p.subtitle}
-                </div>
-
-                <h3 className={`font-bold text-[1.5rem] mb-6 ${p.featured ? 'text-white' : 'text-[#0A1929]'}`}
-                  style={{ fontFamily: 'var(--font-heading)' }}>{p.title}</h3>
-
-                <ul className="mb-[30px] flex flex-col">
-                  {p.features.map((f) => (
-                    <li key={f}
-                      className={`flex items-start gap-[10px] py-[10px] text-[14.5px]
-                        ${p.featured ? 'text-white/90 border-white/15' : 'text-slate-600 border-[rgba(0,120,191,0.06)]'}`}
-                      style={{ borderBottom: '1px solid' }}
-                    >
-                      <span
-                        className={`w-[22px] h-[22px] min-w-[22px] rounded-full flex items-center justify-center text-[11px] font-bold
-                          ${p.featured ? 'bg-white/20 text-white' : 'bg-[rgba(0,120,191,0.1)] text-[#0078BF]'}`}>
-                        ✓
-                      </span>
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-
-                <a
-                  href="#contact"
-                  className={`inline-flex items-center gap-2 px-6 py-[13px] rounded-full font-semibold text-sm transition-all duration-300
-                    ${p.featured
-                      ? 'bg-white text-[#0078BF] hover:bg-white/90 hover:-translate-y-0.5'
-                      : 'text-[#0078BF] hover:text-white hover:-translate-y-0.5'
-                    }`}
-                  style={p.featured
-                    ? {}
-                    : { background: 'rgba(0,120,191,0.08)' }
-                  }
-                  onMouseEnter={e => { if (!p.featured) e.currentTarget.style.background = 'linear-gradient(135deg, #0078BF, #1CBBEE)'; }}
-                  onMouseLeave={e => { if (!p.featured) e.currentTarget.style.background = 'rgba(0,120,191,0.08)'; }}
-                >
-                  Talk to us <FiArrowRight />
-                </a>
+                </BeamCard>
               </motion.div>
             );
           })}
@@ -152,23 +284,22 @@ const Partnership = () => {
 
         {/* Bottom banner */}
         <motion.div
-          className="flex flex-wrap md:flex-nowrap items-center gap-6 p-[30px_40px] bg-white rounded-[24px]
-                     shadow-[0_20px_60px_rgba(0,120,191,0.1)]"
-          style={{ border: '1px solid rgba(0,120,191,0.15)' }}
-          initial={{ opacity: 0, y: 30 }}
+          className="flex flex-wrap md:flex-nowrap items-center gap-6 p-8 bg-white rounded-[var(--radius-lg)]"
+          style={{ border: '1px solid rgba(0,120,191,0.12)', boxShadow: 'var(--shadow-md)' }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.55 }}
         >
-          <div className="w-[60px] h-[60px] min-w-[60px] rounded-[16px] flex items-center justify-center text-white text-[26px] flex-shrink-0"
-            style={{ background: 'linear-gradient(135deg, #0078BF, #1CBBEE)' }}>
+          <div className="w-[52px] h-[52px] min-w-[52px] rounded-[var(--radius-md)] flex items-center justify-center text-white text-[22px] flex-shrink-0"
+            style={{ background: 'var(--gradient-primary)' }}>
             <FiTrendingUp />
           </div>
           <div className="flex-1">
-            <h4 className="font-bold text-[1.2rem] text-[#0A1929] mb-1" style={{ fontFamily: 'var(--font-heading)' }}>
+            <h4 className="font-bold text-[1.1rem] mb-1" style={{ fontFamily: 'var(--font-heading)', color: 'var(--brand-dark)' }}>
               Not sure which model fits?
             </h4>
-            <p className="text-[14.5px] text-slate-500">
+            <p className="text-[14px] text-slate-500">
               Book a 30-minute discovery call — we'll map the right partnership for your stage.
             </p>
           </div>
@@ -176,6 +307,7 @@ const Partnership = () => {
             Book a Call <FiArrowRight />
           </a>
         </motion.div>
+
       </div>
     </section>
   );
