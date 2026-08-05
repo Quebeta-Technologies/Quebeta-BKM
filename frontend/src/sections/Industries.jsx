@@ -56,7 +56,7 @@ const Industries = () => {
             Deep expertise across <span className="gradient-text">every vertical</span>
           </h2>
           <p className="section-subtitle">
-            From bootstrapped startups to established enterprises we've helped
+            From bootstrapped startups to established enterprises — we've helped
             teams in every industry ship products that move the needle.
           </p>
         </motion.div>
@@ -77,51 +77,60 @@ const Industries = () => {
             style={{ background: 'var(--brand-primary)', minHeight: '360px' }}
           >
             {/* Top fade */}
-            <div className="absolute inset-x-0 top-0 h-20 z-40 pointer-events-none"
-              style={{ background: 'linear-gradient(to bottom, var(--brand-primary), transparent)' }} />
+            <div className="absolute inset-x-0 top-0 h-24 z-40 pointer-events-none"
+              style={{ background: 'linear-gradient(to bottom, var(--brand-primary) 30%, transparent)' }} />
             {/* Bottom fade */}
-            <div className="absolute inset-x-0 bottom-0 h-20 z-40 pointer-events-none"
-              style={{ background: 'linear-gradient(to top, var(--brand-primary), transparent)' }} />
-            {/* Subtle dot texture */}
+            <div className="absolute inset-x-0 bottom-0 h-24 z-40 pointer-events-none"
+              style={{ background: 'linear-gradient(to top, var(--brand-primary) 30%, transparent)' }} />
+            {/* Dot texture */}
             <div className="absolute inset-0 pointer-events-none opacity-[0.04]"
               style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '28px 28px' }} />
 
-            <div className="relative w-full flex items-center justify-start z-20"
-              style={{ height: `${ITEM_HEIGHT * 5}px` }}>
+            {/* 3D drum container */}
+            <div
+              className="relative w-full flex items-center justify-start z-20"
+              style={{ height: `${ITEM_HEIGHT * 5}px`, perspective: '500px' }}
+            >
               {industries.map((industry, index) => {
                 const Icon = industry.icon;
                 const isActive = index === currentIndex;
                 const distance = index - currentIndex;
                 const wrappedDistance = wrap(-(industries.length / 2), industries.length / 2, distance);
+                const absD = Math.abs(wrappedDistance);
+                const rotateX = wrappedDistance * 20;
+                const scale = 1 - absD * 0.07;
+                const opacity = absD === 0 ? 1 : absD === 1 ? 0.65 : absD === 2 ? 0.35 : 0.12;
 
                 return (
                   <motion.div
                     key={industry.name}
-                    style={{ height: ITEM_HEIGHT, width: 'fit-content' }}
+                    className="absolute w-full flex items-center justify-start"
                     animate={{
                       y: wrappedDistance * ITEM_HEIGHT,
-                      opacity: 1 - Math.abs(wrappedDistance) * 0.25,
+                      rotateX,
+                      scale,
+                      opacity,
                     }}
                     transition={{ type: 'spring', stiffness: 90, damping: 22, mass: 1 }}
-                    className="absolute flex items-center justify-start"
+                    style={{ height: ITEM_HEIGHT, transformStyle: 'preserve-3d' }}
                   >
                     <button
                       onClick={() => handleChipClick(index)}
                       onMouseEnter={() => setIsPaused(true)}
                       onMouseLeave={() => setIsPaused(false)}
-                      className="relative flex items-center gap-3 px-6 py-3.5 rounded-full transition-all duration-500 text-left"
+                      className="flex items-center gap-3 px-5 py-3 rounded-full transition-colors duration-300 text-left w-fit"
                       style={{
-                        background: isActive ? '#fff' : 'rgba(255,255,255,0.08)',
-                        color: isActive ? 'var(--brand-primary)' : 'rgba(255,255,255,0.85)',
-                        border: isActive ? '1.5px solid #fff' : '1.5px solid rgba(255,255,255,0.25)',
+                        background: isActive ? '#fff' : 'rgba(255,255,255,0.1)',
+                        color: isActive ? 'var(--brand-primary)' : '#fff',
+                        border: isActive ? '1.5px solid #fff' : '1.5px solid rgba(255,255,255,0.2)',
                         fontFamily: 'var(--font-body)',
                       }}
                     >
-                      <span className="text-[17px] flex-shrink-0"
-                        style={{ color: isActive ? 'var(--brand-primary)' : 'rgba(255,255,255,0.75)' }}>
+                      <span className="text-[16px] flex-shrink-0"
+                        style={{ color: isActive ? 'var(--brand-primary)' : 'rgba(255,255,255,0.85)' }}>
                         <Icon />
                       </span>
-                      <span className="text-[13px] font-semibold tracking-[0.07em] uppercase whitespace-nowrap">
+                      <span className="text-[12px] font-semibold tracking-[0.07em] uppercase whitespace-nowrap">
                         {industry.name}
                       </span>
                     </button>
@@ -136,7 +145,6 @@ const Industries = () => {
             className="flex-1 relative flex items-center justify-center overflow-hidden py-14 px-8 lg:px-12"
             style={{ background: '#F8FAFC' }}
           >
-            {/* Subtle radial glow behind cards */}
             <div className="absolute inset-0 pointer-events-none"
               style={{ background: 'radial-gradient(ellipse at 60% 50%, rgba(0,120,191,0.07) 0%, transparent 70%)' }} />
 
