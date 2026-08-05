@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { FiArrowRight } from 'react-icons/fi';
+import { FiArrowRight, FiUsers } from 'react-icons/fi';
 import { TbBuildingSkyscraper, TbRocket } from 'react-icons/tb';
 
 const About = () => {
