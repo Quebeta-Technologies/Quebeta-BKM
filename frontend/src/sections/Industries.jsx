@@ -57,7 +57,7 @@ const Industries = () => {
             Deep expertise across <span className="gradient-text">every vertical</span>
           </h2>
           <p className="section-subtitle">
-            From bootstrapped startups to established enterprises — we've helped
+            From bootstrapped startups to established enterprises we've helped
             teams in every industry ship products that move the needle.
           </p>
         </motion.div>
@@ -124,7 +124,7 @@ const Industries = () => {
 
           {/* ── Right panel — image cards exactly like 21st.dev ── */}
           <div className="flex-1 relative flex items-center justify-center py-16 md:py-24 lg:py-16 px-6 md:px-12 lg:px-10 overflow-hidden"
-            style={{ background: 'rgba(0,120,191,0.03)', borderTop: '1px solid rgba(0,120,191,0.08)' }}>
+            style={{ background: '#fff', borderTop: '1px solid rgba(0,120,191,0.08)' }}>
 
             <div className="relative w-full max-w-[420px]" style={{ aspectRatio: '4/5' }}>
               {industries.map((industry, index) => {
