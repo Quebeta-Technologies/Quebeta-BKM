@@ -77,7 +77,7 @@ h1,h2,h3,h4,h5,h6 {
     display: inline-block;
   }
 
-  .section { @apply py-[100px] relative overflow-hidden; }
+  .section { @apply py-[60px] relative overflow-hidden; }
   .section-container { @apply max-w-[1400px] mx-auto px-6 md:px-16; }
   .section-header { @apply text-center max-w-[860px] mx-auto mb-16; }
 
@@ -207,10 +207,10 @@ h1,h2,h3,h4,h5,h6 {
    RESPONSIVE HELPERS
    ============================================================ */
 @media (max-width: 968px) {
-  .section { @apply py-[70px]; }
+  .section { @apply py-[45px]; }
   .section-header { @apply mb-11; }
 }
 @media (max-width: 640px) {
-  .section { @apply py-[60px]; }
+  .section { @apply py-[36px]; }
   .btn { @apply px-6 py-3 text-sm; }
 }
