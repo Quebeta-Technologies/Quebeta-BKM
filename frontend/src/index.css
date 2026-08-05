@@ -82,11 +82,9 @@ h1,h2,h3,h4,h5,h6 {
   .section-header { @apply text-center max-w-[860px] mx-auto mb-16; }
 
   .section-eyebrow {
-    @apply inline-flex items-center gap-2 px-[18px] py-2 rounded-full text-[13px] font-semibold tracking-[0.08em] uppercase mb-5 border;
+    @apply text-[13px] font-semibold tracking-[0.08em] uppercase mb-5 block;
     font-family: 'Google Sans', sans-serif;
-    background: rgba(0,120,191,0.08);
     color: var(--brand-primary);
-    border-color: rgba(0,120,191,0.15);
   }
 
   .section-title {
