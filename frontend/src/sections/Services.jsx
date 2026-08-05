@@ -127,7 +127,7 @@ const Services = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.55 }}
         >
-          <div className="section-eyebrow"><span>●</span> What We Do</div>
+          <div className="section-eyebrow">What We Do</div>
           {/* Heading overrides the clamp() in section-title to a fixed 30px */}
           <h2 className="section-title" style={{ fontSize: '1.875rem' }}>
             End-to-end solutions to{' '}
