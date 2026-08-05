@@ -1,114 +1,214 @@
+import { useRef, useEffect, useCallback, useState, useId } from 'react';
 import { motion } from 'framer-motion';
 import { FiArrowUpRight } from 'react-icons/fi';
-import Tilt from 'react-parallax-tilt';
 import { services } from '../data/services';
 
+/* ─── Reduced-motion hook ─── */
+function useReducedMotion() {
+  const [reduced, setReduced] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  );
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setReduced(mq.matches);
+    const onChange = (e) => setReduced(e.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+  return reduced;
+}
+
+/* ─── Spring physics ─── */
+class Spring {
+  constructor(value, k, d) { this.x = value; this.v = 0; this.target = value; this.k = k; this.d = d; }
+  step(dt) {
+    const a = this.k * (this.target - this.x) - this.d * this.v;
+    this.v += a * dt; this.x += this.v * dt; return this.x;
+  }
+}
+
+/* ─── Animated border card ─── */
+function BeamCard({ children, className = '' }) {
+  const uid = useId().replace(/[^a-zA-Z0-9]/g, '');
+  const cls = `mk-beam-${uid}`;
+  const rootRef = useRef(null);
+  const reduced = useReducedMotion();
+  const speedRef = useRef(new Spring(42, 30, 11));
+  const angleRef = useRef(0);
+  const rafRef = useRef(0);
+
+  const paint = useCallback((angle) => {
+    const el = rootRef.current;
+    if (!el) return;
+    el.style.setProperty('--mk-a', `${(((angle % 360) + 360) % 360).toFixed(2)}deg`);
+  }, []);
+
+  useEffect(() => {
+    if (reduced) { paint(40); return; }
+    let last = 0;
+    const frame = (now) => {
+      if (!last) last = now;
+      const dt = Math.min((now - last) / 1000, 0.05);
+      last = now;
+      angleRef.current += speedRef.current.step(dt) * dt;
+      paint(angleRef.current);
+      rafRef.current = requestAnimationFrame(frame);
+    };
+    rafRef.current = requestAnimationFrame(frame);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [reduced, paint]);
+
+  const surge = useCallback(() => { speedRef.current.target = 240; }, []);
+  const settle = useCallback(() => { speedRef.current.target = 42; }, []);
+
+  /* Beam gradient uses --brand-primary and --brand-secondary from your design system */
+  const css = `
+.${cls} { --mk-a: 0deg; }
+.${cls} .beam-ring {
+  position: absolute; inset: -1px; border-radius: var(--radius-lg); pointer-events: none;
+  background: conic-gradient(from var(--mk-a),
+    transparent 0deg,
+    color-mix(in srgb, var(--brand-secondary) 4%, transparent) 18deg,
+    color-mix(in srgb, var(--brand-secondary) 55%, transparent) 46deg,
+    var(--brand-primary) 56deg,
+    color-mix(in srgb, var(--brand-primary) 22%, #fff) 60deg,
+    transparent 63deg,
+    transparent 198deg,
+    color-mix(in srgb, var(--brand-secondary) 4%, transparent) 216deg,
+    color-mix(in srgb, var(--brand-secondary) 50%, transparent) 244deg,
+    var(--brand-secondary) 254deg,
+    color-mix(in srgb, var(--brand-secondary) 26%, #fff) 258deg,
+    transparent 261deg,
+    transparent 360deg);
+  padding: 1.5px;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+}
+.${cls} .beam-glow {
+  position: absolute; inset: -1px; border-radius: var(--radius-lg); pointer-events: none; z-index: -1;
+  background: conic-gradient(from var(--mk-a),
+    transparent 0deg,
+    color-mix(in srgb, var(--brand-secondary) 55%, transparent) 46deg,
+    var(--brand-primary) 56deg,
+    color-mix(in srgb, var(--brand-primary) 22%, #fff) 60deg,
+    transparent 63deg,
+    transparent 360deg);
+  filter: blur(12px); opacity: 0.22;
+}`;
+
+  return (
+    <div
+      ref={rootRef}
+      className={`relative rounded-[var(--radius-lg)] bg-white ${cls} ${className}`}
+      style={{ border: '1px solid rgba(0,120,191,0.08)', isolation: 'isolate' }}
+      onPointerEnter={surge}
+      onPointerLeave={settle}
+    >
+      <style dangerouslySetInnerHTML={{ __html: css }} />
+      <div aria-hidden="true" className="beam-glow" />
+      <div aria-hidden="true" className="beam-ring" />
+      {children}
+    </div>
+  );
+}
+
+/* ─── Services section ─── */
 const Services = () => {
   return (
-    <section id="services" className="section relative" style={{ background: '#F8FCFF' }}>
-      {/* Background orbs */}
-      <div className="absolute w-[400px] h-[400px] rounded-full top-[10%] right-[-100px] -z-0 pointer-events-none"
-        style={{ background: 'rgba(0,120,191,0.4)', filter: 'blur(100px)', opacity: 0.3 }} />
-      <div className="absolute w-[350px] h-[350px] rounded-full bottom-[10%] left-[-80px] -z-0 pointer-events-none"
-        style={{ background: 'rgba(28,187,238,0.4)', filter: 'blur(100px)', opacity: 0.3 }} />
+    <section id="services" className="section bg-white">
+      <div className="section-container">
 
-      <div className="max-w-[1280px] mx-auto px-6 relative z-10">
         <motion.div
           className="section-header"
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.55 }}
         >
           <div className="section-eyebrow"><span>●</span> What We Do</div>
-          <h2 className="section-title">
-            End-to-end solutions to <br />
+          {/* Heading overrides the clamp() in section-title to a fixed 30px */}
+          <h2 className="section-title" style={{ fontSize: '1.875rem' }}>
+            End-to-end solutions to{' '}
             <span className="gradient-text">build, launch & grow</span> your business
           </h2>
           <p className="section-subtitle">
-            Six integrated capabilities under one roof — every service built to
+            Six integrated capabilities under one roof every service built to
             work with the next, so nothing gets lost in translation.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[26px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {services.map((service, i) => {
             const Icon = service.icon;
             return (
               <motion.div
                 key={service.title}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: (i % 3) * 0.1 }}
+                transition={{ duration: 0.5, delay: (i % 3) * 0.08 }}
+                className="h-full"
               >
-                <Tilt
-                  tiltMaxAngleX={6} tiltMaxAngleY={6}
-                  glareEnable glareMaxOpacity={0.15}
-                  glareColor="#1CBBEE" glarePosition="all"
-                  scale={1.02} transitionSpeed={1500}
-                  className="rounded-[24px] h-full"
-                >
-                  <div
-                    className="relative p-[32px_28px] bg-white rounded-[24px] h-full overflow-hidden flex flex-col
-                               transition-all duration-300 hover:-translate-y-1
-                               hover:shadow-[0_24px_60px_rgba(0,120,191,0.12)]"
-                    style={{ border: '1px solid rgba(0,120,191,0.08)' }}
-                    onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(0,120,191,0.25)'}
-                    onMouseLeave={e => e.currentTarget.style.borderColor = 'rgba(0,120,191,0.08)'}
-                  >
-                    {/* Hover glow */}
-                    <div className="absolute top-0 right-0 w-[200px] h-[200px] opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-                      style={{ background: 'radial-gradient(circle, rgba(28,187,238,0.15), transparent 70%)' }} />
+                <BeamCard className="h-full transition-transform duration-300 hover:-translate-y-1">
+                  <div className="flex flex-col h-full p-7">
 
-                    {/* Icon row */}
-                    <div className="flex items-center justify-between mb-[22px]">
-                      <div className="w-[60px] h-[60px] rounded-[16px] flex items-center justify-center text-white text-[26px]
-                                      transition-transform duration-300 hover:-rotate-[8deg] hover:scale-[1.08]"
-                        style={{
-                          background: `linear-gradient(135deg, ${service.color}, #1CBBEE)`,
-                          boxShadow: '0 8px 24px rgba(0,120,191,0.25)',
-                        }}>
+                    {/* Icon — uses service.color → --brand-secondary gradient */}
+                    <div className="mb-6">
+                      <div
+                        className="w-[52px] h-[52px] rounded-[var(--radius-md)] flex items-center justify-center text-white text-[22px]"
+                        style={{ background: `linear-gradient(135deg, ${service.color}, var(--brand-secondary))` }}
+                      >
                         <Icon />
                       </div>
-                      <span className="font-extrabold text-[2.5rem] leading-none"
-                        style={{ fontFamily: 'var(--font-heading)', color: 'rgba(0,120,191,0.08)' }}>
-                        0{i + 1}
-                      </span>
                     </div>
 
-                    <h3 className="font-bold text-[1.35rem] text-[#0A1929] mb-3"
-                      style={{ fontFamily: 'var(--font-heading)' }}>{service.title}</h3>
-                    <p className="text-[14.5px] text-slate-500 leading-[1.65] mb-[22px] flex-grow">{service.desc}</p>
+                    {/* Title — uses h3 which inherits from your h1-h6 rule */}
+                    <h3 className="text-[1.1rem] text-[var(--brand-dark)] font-bold mb-2">
+                      {service.title}
+                    </h3>
 
-                    {/* Feature tags */}
-                    <div className="flex flex-wrap gap-2 mb-6">
+                    <p className="text-[13.5px] text-slate-500 leading-relaxed mb-5 flex-grow">
+                      {service.desc}
+                    </p>
+
+                    {/* Feature tags — use brand-primary color token */}
+                    <div className="flex flex-wrap gap-1.5 mb-5">
                       {service.features.map((f) => (
-                        <span key={f}
-                          className="px-3 py-[5px] text-xs font-semibold rounded-full"
+                        <span
+                          key={f}
+                          className="px-2.5 py-1 text-[11px] font-medium rounded-full"
                           style={{
-                            background: 'rgba(0,120,191,0.06)',
-                            color: '#0078BF',
-                            border: '1px solid rgba(0,120,191,0.1)',
-                          }}>
+                            background: 'rgba(0,120,191,0.05)',
+                            color: 'var(--brand-primary)',
+                            border: '1px solid rgba(0,120,191,0.12)',
+                          }}
+                        >
                           {f}
                         </span>
                       ))}
                     </div>
 
-                    <a href="#contact"
-                      className="inline-flex items-center gap-[6px] font-semibold text-sm text-[#0078BF]
-                                 transition-all duration-300 self-start hover:gap-3 group"
-                      style={{ fontFamily: 'var(--font-heading)' }}>
+                    {/* CTA — uses brand-primary color token, font-heading var */}
+                    <a
+                      href="#contact"
+                      className="inline-flex items-center gap-1.5 text-[13px] font-semibold
+                                 text-[var(--brand-primary)] transition-all duration-300
+                                 self-start group hover:gap-2.5"
+                      style={{ fontFamily: 'var(--font-heading)' }}
+                    >
                       Learn more
-                      <FiArrowUpRight className="transition-transform duration-300 group-hover:translate-x-[3px] group-hover:-translate-y-[3px]" />
+                      <FiArrowUpRight className="transition-transform duration-300 group-hover:translate-x-[2px] group-hover:-translate-y-[2px]" />
                     </a>
+
                   </div>
-                </Tilt>
+                </BeamCard>
               </motion.div>
             );
           })}
         </div>
+
       </div>
     </section>
   );
