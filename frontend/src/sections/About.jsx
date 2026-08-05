@@ -1,14 +1,6 @@
 import { motion } from 'framer-motion';
-import { FiArrowRight, FiUsers } from 'react-icons/fi';
+import { FiArrowRight } from 'react-icons/fi';
 import { TbBuildingSkyscraper, TbRocket } from 'react-icons/tb';
-
-const stats = [
-  { value: '98%', label: 'Client Retention' },
-  { value: '6+', label: 'Core Services' },
-  { value: '50+', label: 'Brands Built' },
-  { value: '4', label: 'Years of Growth' },
-];
-
 
 const About = () => {
   return (
@@ -103,56 +95,7 @@ const About = () => {
               <span className="text-[#0078BF]">that outlast</span> the hype.
             </h2>
 
-            {/* Body */}
-            <p className="text-[15px] leading-[1.9] text-[#374151] mb-4">
-              Most agencies hand you a deliverable and disappear. Quebeta embeds —{' '}
-              <strong className="font-bold text-[#0A1929]">strategy wired into every pixel, every system, every campaign</strong>{' '}
-              until growth becomes the default.
-            </p>
-            <p className="text-[15px] leading-[1.9] text-[#374151] mb-10">
-              We think like co-founders, move like an agency, and stay accountable to your revenue — not your applause. From a single startup idea to a fully scaled brand, we're the team you don't have to manage.
-            </p>
-
-            {/* Stats */}
-            <div className="grid grid-cols-4 gap-4 mb-10 pb-10 border-b border-slate-100">
-              {stats.map((s, i) => (
-                <motion.div
-                  key={s.label}
-                  initial={{ opacity: 0, y: 8 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.35, delay: 0.06 * i }}
-                >
-                  <div className="text-[#0078BF] font-extrabold leading-none tracking-[-0.03em]" style={{ fontSize: 'clamp(22px, 3vw, 30px)' }}>
-                    {s.value}
-                  </div>
-                  <div className="text-[10px] font-semibold text-slate-400 tracking-[0.06em] uppercase mt-1">
-                    {s.label}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Extended body copy */}
-            <motion.div
-              className="mb-10 space-y-5"
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.15 }}
-            >
-              <p className="text-[15px] leading-[1.9] text-[#374151]">
-                Quebeta was founded on a simple belief — that <strong className="font-bold text-[#0A1929]">ambitious businesses deserve more than a vendor</strong>. They deserve a partner who understands the full picture: the market, the product, the people, and the path to revenue.
-              </p>
-              <p className="text-[15px] leading-[1.9] text-[#374151]">
-                We combine strategy, design, technology, AI, and marketing into one seamless engine. No silos. No handoff gaps. Just a single team that moves fast, thinks clearly, and stays accountable to the outcomes that actually matter — growth, retention, and revenue.
-              </p>
-              <p className="text-[15px] leading-[1.9] text-[#374151]">
-                Whether you're launching your first product or scaling an established brand, <strong className="font-bold text-[#0A1929]">we build the systems and strategy that carry you forward</strong> — long after the initial project is done.
-              </p>
-            </motion.div>
-
-            {/* CTAs */}
+                        {/* CTAs */}
             <div className="flex items-center gap-6">
               <motion.a
                 href="#contact"
