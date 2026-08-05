@@ -136,8 +136,7 @@ const Industries = () => {
                 return (
                   <motion.div
                     key={industry.name}
-                    className="absolute inset-0 rounded-[2rem] md:rounded-[2.8rem] overflow-hidden border-4 md:border-8 bg-white origin-center"
-                    style={{ borderColor: '#fff' }}
+                    className="absolute inset-0 overflow-hidden bg-white origin-center"
                     initial={false}
                     animate={{
                       x: isActive ? 0 : isPrev ? -100 : isNext ? 100 : 0,
