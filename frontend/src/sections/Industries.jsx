@@ -62,28 +62,24 @@ const Industries = () => {
           </p>
         </motion.div>
 
-        {/* Carousel */}
-        <motion.div
-          className="relative overflow-hidden rounded-[2rem] flex flex-col lg:flex-row"
-          style={{ minHeight: '480px', border: '1px solid rgba(0,120,191,0.1)' }}
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.55 }}
-        >
+        {/* Carousel — matches 21st.dev layout exactly */}
+        <div className="relative overflow-hidden rounded-[2.5rem] flex flex-col lg:flex-row"
+          style={{ minHeight: '520px', border: '1px solid rgba(0,120,191,0.12)' }}>
 
           {/* ── Left panel ── */}
           <div
-            className="w-full lg:w-[40%] relative flex items-center justify-center overflow-hidden px-8 lg:px-12"
-            style={{ background: 'var(--brand-primary)', minHeight: '320px' }}
+            className="w-full lg:w-[40%] relative flex flex-col items-start justify-center overflow-hidden px-8 md:px-16 lg:pl-16"
+            style={{ background: 'var(--brand-primary)', minHeight: '350px' }}
           >
-            {/* Top + bottom fade */}
-            <div className="absolute inset-x-0 top-0 h-16 z-10 pointer-events-none"
-              style={{ background: 'linear-gradient(to bottom, var(--brand-primary), transparent)' }} />
-            <div className="absolute inset-x-0 bottom-0 h-16 z-10 pointer-events-none"
-              style={{ background: 'linear-gradient(to top, var(--brand-primary), transparent)' }} />
+            {/* Top fade */}
+            <div className="absolute inset-x-0 top-0 h-16 z-40 pointer-events-none"
+              style={{ background: 'linear-gradient(to bottom, var(--brand-primary) 0%, transparent 100%)' }} />
+            {/* Bottom fade */}
+            <div className="absolute inset-x-0 bottom-0 h-16 z-40 pointer-events-none"
+              style={{ background: 'linear-gradient(to top, var(--brand-primary) 0%, transparent 100%)' }} />
 
-            <div className="relative w-full flex items-center justify-start z-20" style={{ height: `${ITEM_HEIGHT * 5}px` }}>
+            <div className="relative w-full h-full flex items-center justify-start z-20"
+              style={{ minHeight: `${ITEM_HEIGHT * 5}px` }}>
               {industries.map((industry, index) => {
                 const Icon = industry.icon;
                 const isActive = index === currentIndex;
@@ -96,7 +92,7 @@ const Industries = () => {
                     style={{ height: ITEM_HEIGHT, width: 'fit-content' }}
                     animate={{
                       y: wrappedDistance * ITEM_HEIGHT,
-                      opacity: 1 - Math.abs(wrappedDistance) * 0.22,
+                      opacity: 1 - Math.abs(wrappedDistance) * 0.25,
                     }}
                     transition={{ type: 'spring', stiffness: 90, damping: 22, mass: 1 }}
                     className="absolute flex items-center justify-start"
@@ -105,18 +101,18 @@ const Industries = () => {
                       onClick={() => handleChipClick(index)}
                       onMouseEnter={() => setIsPaused(true)}
                       onMouseLeave={() => setIsPaused(false)}
-                      className="relative flex items-center gap-3 px-6 py-3 rounded-full transition-all duration-500 text-left"
+                      className="relative flex items-center gap-4 px-6 md:px-10 lg:px-8 py-3.5 md:py-5 lg:py-4 rounded-full transition-all duration-700 text-left"
                       style={{
-                        background: isActive ? '#fff' : 'rgba(255,255,255,0.1)',
-                        color: isActive ? 'var(--brand-primary)' : 'rgba(255,255,255,0.65)',
+                        background: isActive ? '#fff' : 'transparent',
+                        color: isActive ? 'var(--brand-primary)' : 'rgba(255,255,255,0.6)',
                         border: isActive ? '1px solid #fff' : '1px solid rgba(255,255,255,0.2)',
-                        fontFamily: 'var(--font-body)',
                       }}
                     >
-                      <span className="text-[18px] flex-shrink-0">
+                      <span className={`text-[18px] flex-shrink-0 transition-colors duration-500 ${isActive ? 'text-[var(--brand-primary)]' : 'text-white/40'}`}>
                         <Icon />
                       </span>
-                      <span className="text-[13px] font-semibold tracking-[0.06em] uppercase whitespace-nowrap">
+                      <span className="font-normal text-sm md:text-[15px] tracking-tight whitespace-nowrap uppercase"
+                        style={{ fontFamily: 'var(--font-body)' }}>
                         {industry.name}
                       </span>
                     </button>
@@ -126,101 +122,81 @@ const Industries = () => {
             </div>
           </div>
 
-          {/* ── Right panel ── */}
-          <div
-            className="flex-1 relative flex items-center justify-center p-10 lg:p-16"
-            style={{ background: '#fff', borderLeft: '1px solid rgba(0,120,191,0.08)' }}
-          >
-            {industries.map((industry, index) => {
-              const Icon = industry.icon;
-              const status = getCardStatus(index);
-              const isActive = status === 'active';
-              const isPrev = status === 'prev';
-              const isNext = status === 'next';
+          {/* ── Right panel — image cards exactly like 21st.dev ── */}
+          <div className="flex-1 relative flex items-center justify-center py-16 md:py-24 lg:py-16 px-6 md:px-12 lg:px-10 overflow-hidden"
+            style={{ background: 'rgba(0,120,191,0.03)', borderTop: '1px solid rgba(0,120,191,0.08)' }}>
 
-              return (
-                <motion.div
-                  key={industry.name}
-                  className="absolute flex flex-col justify-between p-8 rounded-[1.5rem]"
-                  style={{
-                    width: '80%',
-                    maxWidth: '380px',
-                    minHeight: '300px',
-                    background: '#fff',
-                    border: '1px solid rgba(0,120,191,0.1)',
-                    boxShadow: isActive ? 'var(--shadow-lg)' : 'none',
-                  }}
-                  initial={false}
-                  animate={{
-                    x: isActive ? 0 : isPrev ? -80 : isNext ? 80 : 0,
-                    scale: isActive ? 1 : isPrev || isNext ? 0.88 : 0.75,
-                    opacity: isActive ? 1 : isPrev || isNext ? 0.35 : 0,
-                    rotate: isPrev ? -3 : isNext ? 3 : 0,
-                    zIndex: isActive ? 20 : isPrev || isNext ? 10 : 0,
-                    pointerEvents: isActive ? 'auto' : 'none',
-                  }}
-                  transition={{ type: 'spring', stiffness: 260, damping: 25, mass: 0.8 }}
-                >
-                  <AnimatePresence mode="wait">
-                    {isActive && (
-                      <motion.div
-                        key={industry.name}
-                        initial={{ opacity: 0, y: 16 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -8 }}
-                        transition={{ duration: 0.35 }}
-                        className="flex flex-col h-full gap-6"
-                      >
-                        {/* Icon */}
-                        <div
-                          className="w-[60px] h-[60px] rounded-[var(--radius-md)] flex items-center justify-center text-[26px]"
-                          style={{ background: 'rgba(0,120,191,0.08)', color: 'var(--brand-primary)' }}
+            <div className="relative w-full max-w-[420px]" style={{ aspectRatio: '4/5' }}>
+              {industries.map((industry, index) => {
+                const status = getCardStatus(index);
+                const isActive = status === 'active';
+                const isPrev = status === 'prev';
+                const isNext = status === 'next';
+
+                return (
+                  <motion.div
+                    key={industry.name}
+                    className="absolute inset-0 rounded-[2rem] md:rounded-[2.8rem] overflow-hidden border-4 md:border-8 bg-white origin-center"
+                    style={{ borderColor: '#fff' }}
+                    initial={false}
+                    animate={{
+                      x: isActive ? 0 : isPrev ? -100 : isNext ? 100 : 0,
+                      scale: isActive ? 1 : isPrev || isNext ? 0.85 : 0.7,
+                      opacity: isActive ? 1 : isPrev || isNext ? 0.4 : 0,
+                      rotate: isPrev ? -3 : isNext ? 3 : 0,
+                      zIndex: isActive ? 20 : isPrev || isNext ? 10 : 0,
+                      pointerEvents: isActive ? 'auto' : 'none',
+                    }}
+                    transition={{ type: 'spring', stiffness: 260, damping: 25, mass: 0.8 }}
+                  >
+                    {/* Image — replace src with your own per industry */}
+                    <img
+                      src={industry.image || `https://images.unsplash.com/photo-${1500000000000 + index * 10000000}?w=600&q=80`}
+                      alt={industry.name}
+                      className="w-full h-full object-cover transition-all duration-700"
+                      style={{
+                        filter: isActive ? 'none' : 'grayscale(1) blur(2px) brightness(0.75)',
+                      }}
+                    />
+
+                    {/* Bottom overlay — same as 21st.dev */}
+                    <AnimatePresence>
+                      {isActive && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 10 }}
+                          className="absolute inset-x-0 bottom-0 p-10 pt-32 flex flex-col justify-end pointer-events-none"
+                          style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 60%, transparent 100%)' }}
                         >
-                          <Icon />
-                        </div>
-
-                        {/* Counter badge */}
-                        <div
-                          className="self-start px-3 py-1 rounded-full text-[11px] font-semibold tracking-[0.15em] uppercase"
-                          style={{ background: 'rgba(0,120,191,0.06)', color: 'var(--brand-primary)', border: '1px solid rgba(0,120,191,0.12)' }}
-                        >
-                          {String(currentIndex + 1).padStart(2, '0')} / {String(industries.length).padStart(2, '0')}
-                        </div>
-
-                        <div>
-                          <h3
-                            className="font-bold text-[1.4rem] mb-3"
-                            style={{ fontFamily: 'var(--font-heading)', color: 'var(--brand-dark)' }}
-                          >
-                            {industry.name}
-                          </h3>
-                          <p className="text-[14.5px] text-slate-500 leading-relaxed">
+                          <div className="px-4 py-1.5 rounded-full text-[11px] font-normal uppercase tracking-[0.2em] w-fit mb-3"
+                            style={{ background: '#fff', color: 'var(--brand-primary)', border: '1px solid rgba(0,120,191,0.2)' }}>
+                            {index + 1} • {industry.name}
+                          </div>
+                          <p className="text-white font-normal text-xl md:text-2xl leading-tight tracking-tight"
+                            style={{ textShadow: '0 2px 8px rgba(0,0,0,0.4)' }}>
                             {industry.desc}
                           </p>
-                        </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
 
-                        {/* Progress bar */}
-                        <div className="mt-auto">
-                          <div className="h-[2px] w-full rounded-full" style={{ background: 'rgba(0,120,191,0.1)' }}>
-                            <motion.div
-                              className="h-full rounded-full"
-                              style={{ background: 'var(--gradient-primary)' }}
-                              initial={{ width: '0%' }}
-                              animate={{ width: '100%' }}
-                              transition={{ duration: AUTO_PLAY_INTERVAL / 1000, ease: 'linear' }}
-                              key={currentIndex}
-                            />
-                          </div>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </motion.div>
-              );
-            })}
+                    {/* Top-left live dot — same as 21st.dev */}
+                    <div className={`absolute top-8 left-8 flex items-center gap-3 transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-0'}`}>
+                      <div className="w-2 h-2 rounded-full bg-white"
+                        style={{ boxShadow: '0 0 10px white' }} />
+                      <span className="text-white/80 text-[10px] font-normal uppercase tracking-[0.3em]"
+                        style={{ fontFamily: 'monospace' }}>
+                        Live Session
+                      </span>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
           </div>
 
-        </motion.div>
+        </div>
       </div>
     </section>
   );
