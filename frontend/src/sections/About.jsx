@@ -9,20 +9,6 @@ const About = () => {
 
       <div className="section-container py-24 lg:py-32">
 
-        {/* EYEBROW */}
-        <motion.div
-          className="flex items-center gap-3 mb-16"
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          <div className="w-8 h-[2px] bg-[#0078BF]" />
-          <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#0078BF]">
-            About Quebeta
-          </span>
-        </motion.div>
-
         {/* GRID: IMAGE LEFT | CONTENT RIGHT */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 xl:gap-24 items-center">
 
@@ -35,7 +21,6 @@ const About = () => {
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="relative pb-6 pr-6">
-              {/* Main image */}
               <div className="relative rounded-[16px] overflow-hidden" style={{ aspectRatio: '4/3', boxShadow: '0 24px 64px rgba(0,0,0,0.12)' }}>
                 <img
                   src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=900&q=85"
@@ -60,7 +45,7 @@ const About = () => {
                 </div>
               </div>
 
-              {/* Floating retention card — bottom right of image */}
+              {/* Floating retention card */}
               <motion.div
                 className="absolute bottom-0 right-0 bg-white rounded-[14px] flex items-center gap-3.5 px-5 py-4"
                 style={{ boxShadow: '0 12px 40px rgba(0,0,0,0.13)', minWidth: '180px' }}
@@ -89,13 +74,36 @@ const About = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
           >
+            {/* Eyebrow — now on the right */}
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-8 h-[2px] bg-[#0078BF]" />
+              <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#0078BF]">
+                About Quebeta
+              </span>
+            </div>
+
             {/* Headline */}
-            <h2 className="font-extrabold leading-[1.05] tracking-[-0.03em] text-[#0A1929] mb-7" style={{ fontSize: 'clamp(32px, 4vw, 52px)' }}>
+            <h2 className="font-extrabold leading-[1.05] tracking-[-0.03em] text-[#0A1929] mb-6" style={{ fontSize: 'clamp(32px, 4vw, 52px)' }}>
               We build businesses<br />
               <span className="text-[#0078BF]">that outlast</span> the hype.
             </h2>
 
-                        {/* CTAs */}
+            {/* Paragraphs */}
+            <p className="text-[15px] leading-[1.9] text-[#374151] mb-4">
+              Most agencies hand you a deliverable and disappear. Quebeta embeds —{' '}
+              <strong className="font-bold text-[#0A1929]">strategy wired into every pixel, every system, every campaign</strong>{' '}
+              until growth becomes the default.
+            </p>
+            <p className="text-[15px] leading-[1.9] text-[#374151] mb-4">
+              We combine strategy, design, technology, AI, and marketing into one seamless engine. No silos. No handoff gaps. Just a single team that moves fast, thinks clearly, and stays accountable to outcomes that actually matter.
+            </p>
+            <p className="text-[15px] leading-[1.9] text-[#374151] mb-10">
+              Whether you're launching your first product or scaling an established brand,{' '}
+              <strong className="font-bold text-[#0A1929]">we build the systems and strategy that carry you forward</strong>{' '}
+              — long after the initial project is done.
+            </p>
+
+            {/* CTAs */}
             <div className="flex items-center gap-6">
               <motion.a
                 href="#contact"
