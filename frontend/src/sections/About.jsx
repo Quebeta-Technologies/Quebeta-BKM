@@ -1,7 +1,6 @@
-import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FiArrowRight, FiAward, FiUsers } from 'react-icons/fi';
-import { TbChessKnight, TbLayersSubtract, TbTrendingUp, TbBuildingSkyscraper, TbRocket } from 'react-icons/tb';
+import { FiArrowRight, FiUsers } from 'react-icons/fi';
+import { TbBuildingSkyscraper, TbRocket } from 'react-icons/tb';
 
 const stats = [
   { value: '98%', label: 'Client Retention' },
@@ -10,27 +9,8 @@ const stats = [
   { value: '4', label: 'Years of Growth' },
 ];
 
-const points = [
-  {
-    icon: <TbChessKnight size={20} />,
-    title: 'Strategy before everything',
-    desc: 'We plan before we design. Your brand gets direction, not just decoration — every decision is tied to a business outcome.',
-  },
-  {
-    icon: <TbLayersSubtract size={20} />,
-    title: 'One team, end to end',
-    desc: 'Brand, tech, AI, marketing — no vendor juggling, no handoff friction. One team accountable for all of it.',
-  },
-  {
-    icon: <TbTrendingUp size={20} />,
-    title: 'Built for revenue, not applause',
-    desc: 'Every deliverable is tied to a metric that moves your business forward. We track numbers, not compliments.',
-  },
-];
 
 const About = () => {
-  const [activePoint, setActivePoint] = useState(null);
-
   return (
     <section id="about" className="relative bg-white overflow-hidden">
       <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: 'linear-gradient(90deg, transparent, #0078BF 40%, #1CBBEE 60%, transparent)' }} />
@@ -153,55 +133,24 @@ const About = () => {
               ))}
             </div>
 
-            {/* Why Quebeta points */}
-            <div className="mb-10">
-              <div className="text-[10px] font-bold text-slate-400 tracking-[0.15em] uppercase mb-4">Why Quebeta</div>
-              <div className="flex flex-col">
-                {points.map((p, i) => (
-                  <motion.div
-                    key={p.title}
-                    className="flex items-start gap-4 py-[18px]"
-                    style={{
-                      borderBottom: i < points.length - 1 ? '1px solid #f1f5f9' : 'none',
-                      borderTop: i === 0 ? '1px solid #f1f5f9' : 'none',
-                      cursor: 'default',
-                    }}
-                    onMouseEnter={() => setActivePoint(i)}
-                    onMouseLeave={() => setActivePoint(null)}
-                    initial={{ opacity: 0, y: 8 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.35, delay: 0.07 * i }}
-                  >
-                    <div
-                      className="w-10 h-10 min-w-[40px] rounded-[10px] flex items-center justify-center transition-all duration-200"
-                      style={{
-                        background: activePoint === i ? 'rgba(0,120,191,0.12)' : 'rgba(0,120,191,0.06)',
-                        color: activePoint === i ? '#0078BF' : '#93c4dc',
-                      }}
-                    >
-                      {p.icon}
-                    </div>
-                    <div className="flex-1">
-                      <div
-                        className="text-[13.5px] font-bold mb-1 transition-colors duration-200"
-                        style={{ color: activePoint === i ? '#0078BF' : '#0A1929' }}
-                      >
-                        {p.title}
-                      </div>
-                      <div className="text-[13px] leading-[1.65] text-slate-500">{p.desc}</div>
-                    </div>
-                    <motion.div
-                      animate={{ opacity: activePoint === i ? 1 : 0, x: activePoint === i ? 0 : -6 }}
-                      transition={{ duration: 0.16 }}
-                      className="text-[#0078BF] mt-0.5"
-                    >
-                      <FiArrowRight size={14} />
-                    </motion.div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
+            {/* Extended body copy */}
+            <motion.div
+              className="mb-10 space-y-5"
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.15 }}
+            >
+              <p className="text-[15px] leading-[1.9] text-[#374151]">
+                Quebeta was founded on a simple belief — that <strong className="font-bold text-[#0A1929]">ambitious businesses deserve more than a vendor</strong>. They deserve a partner who understands the full picture: the market, the product, the people, and the path to revenue.
+              </p>
+              <p className="text-[15px] leading-[1.9] text-[#374151]">
+                We combine strategy, design, technology, AI, and marketing into one seamless engine. No silos. No handoff gaps. Just a single team that moves fast, thinks clearly, and stays accountable to the outcomes that actually matter — growth, retention, and revenue.
+              </p>
+              <p className="text-[15px] leading-[1.9] text-[#374151]">
+                Whether you're launching your first product or scaling an established brand, <strong className="font-bold text-[#0A1929]">we build the systems and strategy that carry you forward</strong> — long after the initial project is done.
+              </p>
+            </motion.div>
 
             {/* CTAs */}
             <div className="flex items-center gap-6">
