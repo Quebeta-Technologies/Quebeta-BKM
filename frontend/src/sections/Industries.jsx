@@ -63,8 +63,9 @@ const Industries = () => {
         </motion.div>
 
         {/* Carousel — matches 21st.dev layout exactly */}
-        <div className="relative overflow-hidden flex flex-col lg:flex-row"
-          style={{ minHeight: '520px' }}>
+        <div className="relative overflow-hidden rounded-[2.5rem] flex flex-col lg:flex-row"
+          style={{ minHeight: '520px', border: '1px solid rgba(0,120,191,0.12)' }}>
+
           {/* ── Left panel ── */}
           <div
             className="w-full lg:w-[40%] relative flex flex-col items-start justify-center overflow-hidden px-8 md:px-16 lg:pl-16"
