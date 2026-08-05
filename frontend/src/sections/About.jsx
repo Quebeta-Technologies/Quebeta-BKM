@@ -352,7 +352,7 @@ const About = () => {
                 onMouseLeave={e => e.currentTarget.style.color = '#0A1929'}
               >
                 See our services
-                <FiArrowRight size={13} />
+                <FiArrowRight size={23} />
               </a>
             </div>
           </motion.div>
