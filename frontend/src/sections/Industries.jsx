@@ -3,27 +3,22 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { industries } from '../data/industries';
 
 const AUTO_PLAY_INTERVAL = 3000;
+const ITEM_HEIGHT = 65;
 
 const wrap = (min, max, v) => {
   const rangeSize = max - min;
   return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min;
 };
 
-// Number of visible slots on the dial
-const VISIBLE = 5;
-const SLOT_HEIGHT = 64;
-const RADIUS = 160; // virtual drum radius in px
-
 const Industries = () => {
   const [step, setStep] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
-  const count = industries.length;
-  const currentIndex = ((step % count) + count) % count;
+  const currentIndex = ((step % industries.length) + industries.length) % industries.length;
   const nextStep = useCallback(() => setStep((prev) => prev + 1), []);
 
   const handleChipClick = (index) => {
-    const diff = (index - currentIndex + count) % count;
+    const diff = (index - currentIndex + industries.length) % industries.length;
     if (diff > 0) setStep((s) => s + diff);
   };
 
@@ -35,7 +30,7 @@ const Industries = () => {
 
   const getCardStatus = (index) => {
     const diff = index - currentIndex;
-    const len = count;
+    const len = industries.length;
     let d = diff;
     if (diff > len / 2) d -= len;
     if (diff < -len / 2) d += len;
@@ -61,113 +56,80 @@ const Industries = () => {
             Deep expertise across <span className="gradient-text">every vertical</span>
           </h2>
           <p className="section-subtitle">
-            From bootstrapped startups to established enterprises we've helped
+            From bootstrapped startups to established enterprises — we've helped
             teams in every industry ship products that move the needle.
           </p>
         </motion.div>
 
         <motion.div
           className="relative overflow-hidden rounded-[2rem] flex flex-col lg:flex-row"
-          style={{ minHeight: '540px', boxShadow: 'var(--shadow-xl)' }}
+          style={{ minHeight: '540px', boxShadow: 'var(--shadow-xl)', perspective: 'none' }}
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
 
-          {/* ── Left panel: 3D Drum Dial ── */}
+          {/* ── Left panel ── */}
           <div
-            className="w-full lg:w-[42%] relative flex items-center justify-center overflow-hidden"
-            style={{ background: 'var(--brand-primary)', minHeight: '400px' }}
+            className="w-full lg:w-[42%] relative flex flex-col items-start justify-center overflow-hidden px-10 lg:px-14"
+            style={{ background: 'var(--brand-primary)', minHeight: '360px', perspective: 'none' }}
           >
-            {/* Dot texture */}
-            <div className="absolute inset-0 pointer-events-none opacity-[0.035]"
+            <div className="absolute inset-x-0 top-0 h-24 z-40 pointer-events-none"
+              style={{ background: 'linear-gradient(to bottom, var(--brand-primary) 30%, transparent)' }} />
+            <div className="absolute inset-x-0 bottom-0 h-24 z-40 pointer-events-none"
+              style={{ background: 'linear-gradient(to top, var(--brand-primary) 30%, transparent)' }} />
+            <div className="absolute inset-0 pointer-events-none opacity-[0.04]"
               style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '28px 28px' }} />
 
-            {/* Top & bottom fade masks */}
-            <div className="absolute inset-x-0 top-0 z-20 pointer-events-none" style={{ height: '35%', background: 'linear-gradient(to bottom, var(--brand-primary) 0%, transparent 100%)' }} />
-            <div className="absolute inset-x-0 bottom-0 z-20 pointer-events-none" style={{ height: '35%', background: 'linear-gradient(to top, var(--brand-primary) 0%, transparent 100%)' }} />
-
-            {/* Active pill highlight — fixed in center */}
-            <div className="absolute z-10 pointer-events-none left-10 lg:left-14 right-10 lg:right-8"
-              style={{
-                height: `${SLOT_HEIGHT}px`,
-                top: '50%',
-                transform: 'translateY(-50%)',
-                background: '#fff',
-                borderRadius: '999px',
-                boxShadow: '0 4px 24px rgba(0,0,0,0.12)',
-              }} />
-
-            {/* Drum: perspective container */}
+            {/* Flat 2D scroll container — no perspective, no 3D */}
             <div
-              className="relative z-10"
-              style={{
-                height: `${SLOT_HEIGHT * VISIBLE}px`,
-                width: '100%',
-                perspective: '800px',
-                perspectiveOrigin: '50% 50%',
-              }}
+              className="relative w-full flex items-center justify-start z-20"
+              style={{ height: `${ITEM_HEIGHT * 5}px`, transform: 'none' }}
             >
               {industries.map((industry, index) => {
                 const Icon = industry.icon;
+                const isActive = index === currentIndex;
                 const distance = index - currentIndex;
-                const wrappedDistance = wrap(-(count / 2), count / 2, distance);
-                const isActive = wrappedDistance === 0;
-
-                // Drum math: each slot maps to an angle on a cylinder
-                const anglePerSlot = 360 / VISIBLE; // degrees per visible slot
-                const angleDeg = wrappedDistance * anglePerSlot;
-                const angleRad = (angleDeg * Math.PI) / 180;
-
-                // Y position on the drum surface
-                const translateY = RADIUS * Math.sin(angleRad);
-                // Z position (depth)
-                const translateZ = RADIUS * (Math.cos(angleRad) - 1);
-                // Tilt
-                const rotateX = -angleDeg;
-
+                const wrappedDistance = wrap(-(industries.length / 2), industries.length / 2, distance);
                 const absD = Math.abs(wrappedDistance);
-                const opacity = absD === 0 ? 1 : absD === 1 ? 0.55 : absD === 2 ? 0.25 : 0;
+
+                // Dial illusion: scale shrinks horizontally as items move away
+                const scaleX = isActive ? 1 : Math.max(0.75, 1 - absD * 0.08);
+                const opacity = absD === 0 ? 1 : absD === 1 ? 0.65 : absD === 2 ? 0.35 : 0.12;
 
                 return (
                   <motion.div
                     key={industry.name}
-                    className="absolute w-full flex items-center"
-                    style={{
-                      height: `${SLOT_HEIGHT}px`,
-                      top: '50%',
-                      marginTop: `-${SLOT_HEIGHT / 2}px`,
-                      paddingLeft: '2.5rem',
-                      paddingRight: '2rem',
-                      transformStyle: 'preserve-3d',
-                    }}
+                    className="absolute flex items-center justify-start"
+                    style={{ height: ITEM_HEIGHT, width: 'fit-content', transformOrigin: 'left center' }}
                     animate={{
-                      translateY,
-                      translateZ,
-                      rotateX,
+                      y: wrappedDistance * ITEM_HEIGHT,
+                      scaleX,
                       opacity,
+                      rotateX: 0,
+                      rotateY: 0,
+                      rotateZ: 0,
                     }}
-                    transition={{ type: 'spring', stiffness: 80, damping: 20, mass: 1 }}
+                    transition={{ type: 'spring', stiffness: 90, damping: 22, mass: 1 }}
                   >
                     <button
                       onClick={() => handleChipClick(index)}
                       onMouseEnter={() => setIsPaused(true)}
                       onMouseLeave={() => setIsPaused(false)}
-                      className="flex items-center gap-3 w-full h-full px-5"
+                      className="relative flex items-center gap-3 px-5 py-3 rounded-full transition-colors duration-300 text-left w-fit"
                       style={{
-                        background: 'transparent',
-                        border: 'none',
+                        background: isActive ? '#fff' : 'rgba(255,255,255,0.1)',
                         color: isActive ? 'var(--brand-primary)' : '#fff',
+                        border: isActive ? '1.5px solid #fff' : '1.5px solid rgba(255,255,255,0.2)',
                         fontFamily: 'var(--font-body)',
-                        cursor: 'pointer',
                       }}
                     >
-                      <span className="text-[18px] flex-shrink-0"
-                        style={{ color: isActive ? 'var(--brand-primary)' : 'rgba(255,255,255,0.9)' }}>
+                      <span className="text-[16px] flex-shrink-0"
+                        style={{ color: isActive ? 'var(--brand-primary)' : 'rgba(255,255,255,0.85)' }}>
                         <Icon />
                       </span>
-                      <span className="text-[12.5px] font-bold tracking-[0.08em] uppercase whitespace-nowrap">
+                      <span className="text-[12px] font-semibold tracking-[0.07em] uppercase whitespace-nowrap">
                         {industry.name}
                       </span>
                     </button>
